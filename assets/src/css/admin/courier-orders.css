@@ -753,6 +753,7 @@ html.eilmo-cf-courier-modal-open body {
 
 .eilmo-cf-courier-breakdown__store-header > div {
 	display: grid;
+	min-width: 0;
 	gap: 1px;
 }
 

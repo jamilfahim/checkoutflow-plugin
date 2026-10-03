@@ -512,18 +512,48 @@
 		if (config.showStoreHistory && store) {
 			var section = document.createElement('div');
 			section.className = 'eilmo-cf-courier-breakdown__store';
-			var heading = document.createElement('strong');
-			heading.textContent = 'Customer on This Store · ' + Number(store.total || 0) + ' orders';
-			section.appendChild(heading);
-			var stats = document.createElement('div');
-			stats.className = 'eilmo-cf-courier-breakdown__store-stats';
-			[['Completed', store.success], ['Unsuccessful', store.cancel], ['Open', store.open], ['Success', Number(store.resolved_total || 0) > 0 ? String(Number(store.ratio || 0)) + '%' : '—']].forEach(function (pair) {
-				var item = document.createElement('span');
-				var name = document.createElement('small'); name.textContent = pair[0];
-				var value = document.createElement('strong'); value.textContent = String(pair[1] || 0);
-				item.appendChild(name); item.appendChild(value); stats.appendChild(item);
-			});
-			section.appendChild(stats);
+			var storeHeader = document.createElement('div');
+			storeHeader.className = 'eilmo-cf-courier-breakdown__store-header';
+			var storeTitleWrap = document.createElement('div');
+			var storeEyebrow = document.createElement('span');
+			storeEyebrow.className = 'eilmo-cf-courier-breakdown__eyebrow';
+			storeEyebrow.textContent = config.i18n.customerOnStore || 'Customer on This Store';
+			var storeTitle = document.createElement('strong');
+			storeTitle.className = 'eilmo-cf-courier-breakdown__store-title';
+			storeTitle.textContent = config.i18n.storeOrderHistory || 'Store order history';
+			storeTitleWrap.appendChild(storeEyebrow);
+			storeTitleWrap.appendChild(storeTitle);
+			var storeCount = document.createElement('span');
+			storeCount.className = 'eilmo-cf-courier-breakdown__store-count';
+			storeCount.textContent = String(Number(store.total || 0)) + ' ' + (config.i18n.ordersLabel || 'orders');
+			storeHeader.appendChild(storeTitleWrap);
+			storeHeader.appendChild(storeCount);
+			section.appendChild(storeHeader);
+			if (Number(store.total || 0) > 0) {
+				var stats = document.createElement('div');
+				stats.className = 'eilmo-cf-courier-breakdown__store-stats';
+				[
+					[config.i18n.completedLabel || 'Completed', Number(store.success || 0)],
+					[config.i18n.unsuccessfulLabel || 'Unsuccessful', Number(store.cancel || 0)],
+					[config.i18n.openLabel || 'Open', Number(store.open || 0)],
+					[config.i18n.successLabel || 'Success', Number(store.resolved_total || 0) > 0 ? (Math.round(Number(store.ratio || 0) * 10) / 10) + '%' : '—']
+				].forEach(function (pair) {
+					var item = document.createElement('span');
+					var name = document.createElement('small');
+					name.textContent = pair[0];
+					var value = document.createElement('strong');
+					value.textContent = String(pair[1]);
+					item.appendChild(name);
+					item.appendChild(value);
+					stats.appendChild(item);
+				});
+				section.appendChild(stats);
+			} else {
+				var storeEmpty = document.createElement('div');
+				storeEmpty.className = 'eilmo-cf-courier-breakdown__store-empty';
+				storeEmpty.textContent = config.i18n.noStoreHistory || 'No orders found on this store.';
+				section.appendChild(storeEmpty);
+			}
 			popover.appendChild(section);
 		}
 	}
