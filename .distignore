@@ -1,0 +1,9 @@
+.git/
+.github/
+.codex/
+.agents/
+tests/
+tools/
+*.zip
+*.log
+.DS_Store
