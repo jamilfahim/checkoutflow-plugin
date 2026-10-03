@@ -1,0 +1,1831 @@
+/**
+ * Eilmo Cart Drawer.
+ *
+ * Reusable global Cart Drawer trigger + drawer.
+ *
+ * Trigger:
+ * [data-eilmo-cart-drawer-trigger]
+ *
+ * Supported drawer positions:
+ * right, left, bottom.
+ */
+
+
+/* ---------------------------------------------------------
+ * Elementor / Global Cart Trigger
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger-wrap {
+	display: flex;
+
+	align-items: center;
+
+	width: 100%;
+}
+
+
+.eilmo-cf-cart-trigger {
+	position: relative;
+
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	flex: 0 0 auto;
+
+	width: 46px;
+	height: 46px;
+
+	margin: 0;
+	padding: 0;
+
+	border:
+		1px solid transparent;
+
+	border-radius: 0;
+
+	background: transparent;
+
+	color: #111827;
+
+	font: inherit;
+	line-height: 1;
+
+	box-shadow: none;
+
+	appearance: none;
+
+	cursor: pointer;
+
+	transform:
+		translateZ(0);
+
+	transition:
+		background-color 180ms ease,
+		border-color 180ms ease,
+		color 180ms ease,
+		box-shadow 180ms ease,
+		transform 180ms ease,
+		opacity 180ms ease;
+}
+
+
+.eilmo-cf-cart-trigger:hover {
+	background: transparent;
+
+	color: #111827;
+
+	box-shadow: none;
+
+	transform:
+		translateY(-1px);
+}
+
+
+.eilmo-cf-cart-trigger:focus {
+	background: transparent;
+
+	box-shadow: none;
+}
+
+
+.eilmo-cf-cart-trigger:focus-visible {
+	background: transparent;
+
+	color: #111827;
+
+	box-shadow: none;
+
+	outline:
+		2px solid currentColor;
+
+	outline-offset: 5px;
+}
+
+
+.eilmo-cf-cart-trigger:active {
+	background: transparent;
+
+	box-shadow: none;
+
+	transform:
+		translateY(0)
+		scale(0.96);
+}
+
+
+/* ---------------------------------------------------------
+ * Cart Trigger Icon
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger__icon {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	flex: 0 0 auto;
+
+	width: 26px;
+	height: 26px;
+
+	margin: 0;
+	padding: 0;
+
+	color: inherit;
+
+	font-size: 26px;
+	line-height: 1;
+}
+
+
+.eilmo-cf-cart-trigger__icon i {
+	display: block;
+
+	margin: 0;
+	padding: 0;
+
+	color: inherit;
+
+	font-size: inherit;
+	line-height: 1;
+}
+
+
+.eilmo-cf-cart-trigger__icon svg {
+	display: block;
+
+	width: 26px;
+	height: 26px;
+
+	margin: 0;
+	padding: 0;
+
+	fill: currentColor;
+
+	color: inherit;
+}
+
+
+/* ---------------------------------------------------------
+ * Cart Count Badge
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger__count {
+	/*
+	 * Elementor can override this independently from
+	 * the badge background.
+	 */
+	--eilmo-cart-count-animation-color: #d7ff16;
+
+	position: absolute;
+
+	top: -3px;
+	right: -4px;
+
+	z-index: 2;
+
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	min-width: 22px;
+	height: 22px;
+
+	padding:
+		0 5px;
+
+	border: 0;
+
+	border-radius: 999px;
+
+	background: #d7ff16;
+
+	color: #111111;
+
+	font-family: inherit;
+	font-size: 11px;
+	font-weight: 800;
+	line-height: 1;
+
+	letter-spacing: 0;
+
+	text-align: center;
+
+	box-sizing: border-box;
+
+	transform:
+		scale(1);
+
+	transform-origin: center;
+
+	isolation: isolate;
+
+	will-change:
+		transform,
+		box-shadow;
+}
+
+
+/*
+ * Empty cart.
+ *
+ * Existing Cart Drawer JS updates data-count whenever
+ * the WooCommerce cart changes.
+ */
+.eilmo-cf-cart-trigger__count[
+	data-count="0"
+] {
+	display: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Count Animation: None
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger__count[
+	data-eilmo-count-animation="none"
+] {
+	animation: none;
+
+	box-shadow: none;
+}
+
+
+.eilmo-cf-cart-trigger__count[
+	data-eilmo-count-animation="none"
+]::before,
+.eilmo-cf-cart-trigger__count[
+	data-eilmo-count-animation="none"
+]::after {
+	display: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Count Animation: Heartbeat
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="heartbeat"
+] {
+	animation:
+		eilmo-cf-cart-count-heartbeat
+		1.8s
+		ease-in-out
+		infinite;
+}
+
+
+@keyframes eilmo-cf-cart-count-heartbeat {
+
+	0%,
+	38%,
+	100% {
+		transform:
+			scale(1);
+	}
+
+	45% {
+		transform:
+			scale(1.16);
+	}
+
+	52% {
+		transform:
+			scale(1);
+	}
+
+	59% {
+		transform:
+			scale(1.10);
+	}
+
+	68% {
+		transform:
+			scale(1);
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Count Animation: Soft Pulse
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="pulse"
+] {
+	animation:
+		eilmo-cf-cart-count-pulse
+		1.7s
+		ease-in-out
+		infinite;
+}
+
+
+@keyframes eilmo-cf-cart-count-pulse {
+
+	0%,
+	100% {
+		transform:
+			scale(1);
+
+		box-shadow:
+			0 0 0 0
+			color-mix(
+				in srgb,
+				var(
+					--eilmo-cart-count-animation-color
+				)
+				0%,
+				transparent
+			);
+	}
+
+	50% {
+		transform:
+			scale(1.08);
+
+		box-shadow:
+			0 0 18px 4px
+			color-mix(
+				in srgb,
+				var(
+					--eilmo-cart-count-animation-color
+				)
+				45%,
+				transparent
+			);
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Count Animation: Premium Wave
+ *
+ * Clean ripple waves originate from the count badge.
+ * No glow.
+ * No blur.
+ * No badge scaling.
+ * Waves expand outward and fade smoothly.
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="glow_wave"
+] {
+	overflow: visible;
+
+	box-shadow: none;
+}
+
+
+/*
+ * Two independent ripple waves.
+ */
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="glow_wave"
+]::before,
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="glow_wave"
+]::after {
+	content: "";
+
+	position: absolute;
+
+	inset: 0;
+
+	z-index: -1;
+
+	border:
+		1px solid
+		var(
+			--eilmo-cart-count-animation-color
+		);
+
+	border-radius: inherit;
+
+	background: transparent;
+
+	opacity: 0;
+
+	transform:
+		scale(1);
+
+	transform-origin: center;
+
+	pointer-events: none;
+
+	will-change:
+		transform,
+		opacity;
+}
+
+
+/*
+ * First wave.
+ */
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="glow_wave"
+]::before {
+	animation:
+		eilmo-cf-cart-count-premium-wave
+		2.8s
+		cubic-bezier(
+			0.16,
+			0.65,
+			0.30,
+			1
+		)
+		infinite;
+}
+
+
+/*
+ * Second overlapping wave.
+ */
+.eilmo-cf-cart-trigger__count[
+	data-count
+]:not(
+	[data-count="0"]
+)[
+	data-eilmo-count-animation="glow_wave"
+]::after {
+	animation:
+		eilmo-cf-cart-count-premium-wave
+		2.8s
+		cubic-bezier(
+			0.16,
+			0.65,
+			0.30,
+			1
+		)
+		-1.4s
+		infinite;
+}
+
+
+/*
+ * Wave starts exactly from the badge edge,
+ * then continuously expands and disappears.
+ */
+@keyframes eilmo-cf-cart-count-premium-wave {
+
+	0% {
+		opacity: 0;
+
+		transform:
+			scale(1);
+	}
+
+	6% {
+		opacity: 0.58;
+
+		transform:
+			scale(1.02);
+	}
+
+	18% {
+		opacity: 0.50;
+
+		transform:
+			scale(1.22);
+	}
+
+	35% {
+		opacity: 0.38;
+
+		transform:
+			scale(1.48);
+	}
+
+	52% {
+		opacity: 0.27;
+
+		transform:
+			scale(1.74);
+	}
+
+	68% {
+		opacity: 0.16;
+
+		transform:
+			scale(2);
+	}
+
+	82% {
+		opacity: 0.08;
+
+		transform:
+			scale(2.22);
+	}
+
+	92% {
+		opacity: 0.025;
+
+		transform:
+			scale(2.38);
+	}
+
+	100% {
+		opacity: 0;
+
+		transform:
+			scale(2.5);
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Root
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer[hidden] {
+	display: none;
+}
+
+
+body.eilmo-cf-cart-drawer-open {
+	overflow: hidden;
+}
+
+
+.eilmo-cf-cart-drawer {
+	position: fixed;
+
+	inset: 0;
+
+	z-index: 100100;
+
+	display: flex;
+
+	font-family: inherit;
+
+	pointer-events: none;
+}
+
+
+.eilmo-cf-cart-drawer.is-open,
+.eilmo-cf-cart-drawer.is-closing {
+	pointer-events: auto;
+}
+
+
+/* ---------------------------------------------------------
+ * Backdrop
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer
+	.eilmo-cf-cart-drawer__backdrop {
+	position: absolute;
+
+	inset: 0;
+
+	width: 100%;
+	height: 100%;
+
+	margin: 0;
+	padding: 0;
+
+	border: 0;
+	border-radius: 0;
+
+	background:
+		rgba(
+			0,
+			0,
+			0,
+			0.48
+		);
+
+	background-color:
+		rgba(
+			0,
+			0,
+			0,
+			0.48
+		);
+
+	background-image: none;
+
+	color: transparent;
+
+	box-shadow: none;
+
+	opacity: 0;
+
+	appearance: none;
+
+	cursor: default;
+
+	filter: none;
+
+	transform: none;
+
+	transition:
+		opacity 260ms ease;
+}
+
+
+/*
+ * Prevent theme / Elementor global button hover styles
+ * from changing the drawer backdrop.
+ */
+.eilmo-cf-cart-drawer
+	.eilmo-cf-cart-drawer__backdrop:hover,
+.eilmo-cf-cart-drawer
+	.eilmo-cf-cart-drawer__backdrop:focus,
+.eilmo-cf-cart-drawer
+	.eilmo-cf-cart-drawer__backdrop:focus-visible,
+.eilmo-cf-cart-drawer
+	.eilmo-cf-cart-drawer__backdrop:active {
+	border: 0;
+
+	background:
+		rgba(
+			0,
+			0,
+			0,
+			0.48
+		);
+
+	background-color:
+		rgba(
+			0,
+			0,
+			0,
+			0.48
+		);
+
+	background-image: none;
+
+	color: transparent;
+
+	box-shadow: none;
+
+	outline: 0;
+
+	filter: none;
+
+	transform: none;
+}
+
+
+.eilmo-cf-cart-drawer.is-open
+	.eilmo-cf-cart-drawer__backdrop {
+	opacity: 1;
+}
+
+
+/* ---------------------------------------------------------
+ * Panel
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__panel {
+	position: relative;
+
+	z-index: 1;
+
+	display: flex;
+
+	flex-direction: column;
+
+	min-width: 0;
+	min-height: 0;
+
+	background: #ffffff;
+
+	color: #111827;
+
+	box-shadow:
+		0 0 40px
+		rgba(
+			0,
+			0,
+			0,
+			0.18
+		);
+
+	will-change: transform;
+
+	transition:
+		transform 300ms
+		cubic-bezier(
+			0.22,
+			1,
+			0.36,
+			1
+		);
+}
+
+
+/* ---------------------------------------------------------
+ * Right Drawer
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer[
+	data-position="right"
+] {
+	align-items: stretch;
+
+	justify-content: flex-end;
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="right"
+]
+	.eilmo-cf-cart-drawer__panel {
+	width:
+		min(
+			520px,
+			92vw
+		);
+
+	height: 100%;
+
+	transform:
+		translate3d(
+			100%,
+			0,
+			0
+		);
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="right"
+].is-open
+	.eilmo-cf-cart-drawer__panel {
+	transform:
+		translate3d(
+			0,
+			0,
+			0
+		);
+}
+
+
+/* ---------------------------------------------------------
+ * Left Drawer
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer[
+	data-position="left"
+] {
+	align-items: stretch;
+
+	justify-content: flex-start;
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="left"
+]
+	.eilmo-cf-cart-drawer__panel {
+	width:
+		min(
+			520px,
+			92vw
+		);
+
+	height: 100%;
+
+	transform:
+		translate3d(
+			-100%,
+			0,
+			0
+		);
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="left"
+].is-open
+	.eilmo-cf-cart-drawer__panel {
+	transform:
+		translate3d(
+			0,
+			0,
+			0
+		);
+}
+
+
+/* ---------------------------------------------------------
+ * Bottom Drawer
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer[
+	data-position="bottom"
+] {
+	align-items: flex-end;
+
+	justify-content: center;
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="bottom"
+]
+	.eilmo-cf-cart-drawer__panel {
+	width:
+		min(
+			720px,
+			100%
+		);
+
+	max-height: 88dvh;
+
+	border-radius:
+		22px 22px 0 0;
+
+	transform:
+		translate3d(
+			0,
+			100%,
+			0
+		);
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="bottom"
+].is-open
+	.eilmo-cf-cart-drawer__panel {
+	transform:
+		translate3d(
+			0,
+			0,
+			0
+		);
+}
+
+
+/* ---------------------------------------------------------
+ * Bottom Handle
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__handle {
+	display: none;
+}
+
+
+.eilmo-cf-cart-drawer[
+	data-position="bottom"
+]
+	.eilmo-cf-cart-drawer__handle {
+	display: block;
+
+	flex: 0 0 auto;
+
+	width: 42px;
+	height: 4px;
+
+	margin:
+		10px auto 0;
+
+	border-radius: 999px;
+
+	background: #d1d5db;
+}
+
+
+/* ---------------------------------------------------------
+ * Header
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__header {
+	flex: 0 0 auto;
+
+	display: flex;
+
+	align-items: center;
+	justify-content: space-between;
+
+	gap: 18px;
+
+	padding:
+		20px 22px;
+
+	border-bottom:
+		1px solid #e5e7eb;
+}
+
+
+.eilmo-cf-cart-drawer__heading {
+	display: flex;
+
+	align-items: center;
+
+	min-width: 0;
+
+	gap: 9px;
+}
+
+
+.eilmo-cf-cart-drawer__title {
+	margin: 0;
+
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 1.25;
+
+	color: #111827;
+}
+
+
+.eilmo-cf-cart-drawer__count {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	min-width: 24px;
+	height: 24px;
+
+	padding:
+		0 7px;
+
+	border-radius: 999px;
+
+	background: #f3f4f6;
+
+	color: #4b5563;
+
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+
+/* ---------------------------------------------------------
+ * Close Button
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__close {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	flex: 0 0 40px;
+
+	width: 40px;
+	height: 40px;
+
+	margin: 0;
+	padding: 0;
+
+	border:
+		1px solid #e5e7eb;
+
+	border-radius: 50%;
+
+	background: #f9fafb;
+
+	color: #111827;
+
+	box-shadow: none;
+
+	cursor: pointer;
+
+	transition:
+		background-color 180ms ease,
+		border-color 180ms ease,
+		color 180ms ease,
+		box-shadow 180ms ease,
+		transform 180ms ease;
+}
+
+
+.eilmo-cf-cart-drawer__close svg {
+	display: block;
+
+	width: 18px;
+	height: 18px;
+
+	color: currentColor;
+
+	transition:
+		transform 260ms ease;
+}
+
+
+.eilmo-cf-cart-drawer__close:hover,
+.eilmo-cf-cart-drawer__close:focus-visible {
+	border-color: #111827;
+
+	background: #111827;
+
+	color: #ffffff;
+
+	box-shadow:
+		0 6px 16px
+		rgba(
+			0,
+			0,
+			0,
+			0.16
+		);
+
+	transform:
+		scale(1.04);
+}
+
+
+.eilmo-cf-cart-drawer__close:hover svg,
+.eilmo-cf-cart-drawer__close:focus-visible svg {
+	transform:
+		rotate(180deg);
+}
+
+
+.eilmo-cf-cart-drawer__close:focus-visible {
+	outline:
+		3px solid
+		rgba(
+			17,
+			24,
+			39,
+			0.16
+		);
+
+	outline-offset: 3px;
+}
+
+
+.eilmo-cf-cart-drawer__close:active {
+	transform:
+		scale(0.96);
+}
+
+
+/* ---------------------------------------------------------
+ * Body
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__body {
+	flex: 1 1 auto;
+
+	min-height: 0;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	padding:
+		6px 22px 22px;
+
+	overscroll-behavior: contain;
+}
+
+
+.eilmo-cf-cart-drawer__message {
+	margin:
+		14px 0 6px;
+
+	padding:
+		10px 12px;
+
+	border-radius: 8px;
+
+	background: #fef2f2;
+
+	color: #b42318;
+
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+
+/* ---------------------------------------------------------
+ * Cart Items
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__items {
+	display: flex;
+
+	flex-direction: column;
+}
+
+
+.eilmo-cf-cart-drawer__item {
+	display: grid;
+
+	grid-template-columns:
+		78px minmax(0, 1fr);
+
+	gap: 14px;
+
+	padding:
+		16px 0;
+
+	border-bottom:
+		1px solid #edf0f3;
+}
+
+
+.eilmo-cf-cart-drawer__image {
+	width: 78px;
+	height: 78px;
+
+	overflow: hidden;
+
+	border-radius: 10px;
+
+	background: #f5f6f7;
+}
+
+
+.eilmo-cf-cart-drawer__image a {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+}
+
+
+.eilmo-cf-cart-drawer__image-element {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	margin: 0;
+
+	object-fit: cover;
+}
+
+
+.eilmo-cf-cart-drawer__item-content {
+	display: flex;
+
+	flex-direction: column;
+
+	justify-content: space-between;
+
+	min-width: 0;
+
+	gap: 12px;
+}
+
+
+.eilmo-cf-cart-drawer__item-top,
+.eilmo-cf-cart-drawer__item-bottom {
+	display: flex;
+
+	align-items: flex-start;
+	justify-content: space-between;
+
+	gap: 12px;
+}
+
+
+.eilmo-cf-cart-drawer__item-bottom {
+	align-items: center;
+}
+
+
+.eilmo-cf-cart-drawer__item-info {
+	min-width: 0;
+}
+
+
+.eilmo-cf-cart-drawer__item-title {
+	display: block;
+
+	max-width: 100%;
+
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.4;
+
+	text-decoration: none;
+
+	overflow: hidden;
+
+	text-overflow: ellipsis;
+
+	white-space: nowrap;
+}
+
+
+.eilmo-cf-cart-drawer__item-title:hover {
+	color: #000000;
+
+	text-decoration: underline;
+}
+
+
+.eilmo-cf-cart-drawer__variation {
+	margin-top: 4px;
+
+	color: #6b7280;
+
+	font-size: 12px;
+	line-height: 1.45;
+}
+
+
+.eilmo-cf-cart-drawer__variation p {
+	margin: 0;
+}
+
+
+/* ---------------------------------------------------------
+ * Remove Item
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__remove {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	flex: 0 0 28px;
+
+	width: 28px;
+	height: 28px;
+
+	margin:
+		-4px -4px 0 0;
+
+	padding: 0;
+
+	border: 0;
+
+	border-radius: 50%;
+
+	background: transparent;
+
+	color: #9ca3af;
+
+	cursor: pointer;
+
+	transition:
+		background-color 160ms ease,
+		color 160ms ease,
+		transform 160ms ease;
+}
+
+
+.eilmo-cf-cart-drawer__remove svg {
+	display: block;
+
+	width: 16px;
+	height: 16px;
+
+	color: currentColor;
+}
+
+
+.eilmo-cf-cart-drawer__remove:hover,
+.eilmo-cf-cart-drawer__remove:focus-visible {
+	background: #f3f4f6;
+
+	color: #111827;
+}
+
+
+.eilmo-cf-cart-drawer__remove:focus-visible {
+	outline:
+		2px solid currentColor;
+
+	outline-offset: 2px;
+}
+
+
+.eilmo-cf-cart-drawer__remove:active {
+	transform:
+		scale(0.94);
+}
+
+
+/* ---------------------------------------------------------
+ * Quantity
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__quantity {
+	display: inline-grid;
+
+	grid-template-columns:
+		32px 34px 32px;
+
+	align-items: center;
+
+	border:
+		1px solid #dfe3e8;
+
+	border-radius: 8px;
+
+	overflow: hidden;
+
+	background: #ffffff;
+}
+
+
+.eilmo-cf-cart-drawer__quantity-button {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	width: 32px;
+	height: 32px;
+
+	margin: 0;
+	padding: 0;
+
+	border: 0;
+
+	background: #ffffff;
+
+	color: #111827;
+
+	font: inherit;
+
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 1;
+
+	cursor: pointer;
+
+	transition:
+		background-color 160ms ease,
+		color 160ms ease;
+}
+
+
+.eilmo-cf-cart-drawer__quantity-button:hover,
+.eilmo-cf-cart-drawer__quantity-button:focus-visible {
+	background: #f3f4f6;
+}
+
+
+.eilmo-cf-cart-drawer__quantity-button:focus-visible {
+	outline:
+		2px solid #111827;
+
+	outline-offset: -2px;
+}
+
+
+.eilmo-cf-cart-drawer__quantity-button:disabled {
+	color: #c7cbd1;
+
+	cursor: not-allowed;
+}
+
+
+.eilmo-cf-cart-drawer__quantity-value {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	height: 32px;
+
+	border-right:
+		1px solid #edf0f3;
+
+	border-left:
+		1px solid #edf0f3;
+
+	color: #111827;
+
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+
+/* ---------------------------------------------------------
+ * Product Price
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__price,
+.eilmo-cf-cart-drawer__price .amount,
+.eilmo-cf-cart-drawer__price bdi,
+.eilmo-cf-cart-drawer__price
+	.woocommerce-Price-currencySymbol {
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.3;
+
+	white-space: nowrap;
+
+	text-decoration: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Empty Cart
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__empty {
+	display: flex;
+
+	flex-direction: column;
+
+	align-items: center;
+	justify-content: center;
+
+	min-height: 360px;
+
+	padding:
+		40px 18px;
+
+	text-align: center;
+}
+
+
+.eilmo-cf-cart-drawer__empty-icon {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	width: 70px;
+	height: 70px;
+
+	margin-bottom: 16px;
+
+	border-radius: 50%;
+
+	background: #f5f6f7;
+
+	color: #6b7280;
+}
+
+
+.eilmo-cf-cart-drawer__empty-icon svg {
+	display: block;
+
+	width: 32px;
+	height: 32px;
+
+	color: currentColor;
+}
+
+
+.eilmo-cf-cart-drawer__empty-title {
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 17px;
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+
+.eilmo-cf-cart-drawer__empty-text {
+	max-width: 280px;
+
+	margin:
+		7px 0 0;
+
+	color: #6b7280;
+
+	font-size: 13px;
+	line-height: 1.55;
+}
+
+
+/* ---------------------------------------------------------
+ * Footer
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__footer {
+	flex: 0 0 auto;
+
+	padding:
+		18px 22px 22px;
+
+	border-top:
+		1px solid #e5e7eb;
+
+	background: #ffffff;
+}
+
+
+.eilmo-cf-cart-drawer__subtotal {
+	display: flex;
+
+	align-items: center;
+	justify-content: space-between;
+
+	gap: 16px;
+
+	margin-bottom: 14px;
+}
+
+
+.eilmo-cf-cart-drawer__subtotal-label {
+	color: #4b5563;
+
+	font-size: 14px;
+	font-weight: 600;
+}
+
+
+.eilmo-cf-cart-drawer__subtotal-value,
+.eilmo-cf-cart-drawer__subtotal-value .amount,
+.eilmo-cf-cart-drawer__subtotal-value bdi,
+.eilmo-cf-cart-drawer__subtotal-value
+	.woocommerce-Price-currencySymbol {
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 17px;
+	font-weight: 800;
+	line-height: 1.3;
+
+	text-decoration: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Order Now / Log In to Order
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer__order {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+	min-height: 50px;
+
+	margin: 0;
+
+	padding:
+		11px 20px;
+
+	border:
+		1px solid #000000;
+
+	border-radius: 6px;
+
+	background: #000000;
+
+	color: #ffffff;
+
+	font-family: inherit;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.25;
+
+	text-align: center;
+	text-decoration: none;
+
+	box-sizing: border-box;
+
+	cursor: pointer;
+
+	transition:
+		background-color 180ms ease,
+		border-color 180ms ease,
+		color 180ms ease,
+		box-shadow 180ms ease,
+		transform 180ms ease;
+}
+
+
+.eilmo-cf-cart-drawer__order:hover,
+.eilmo-cf-cart-drawer__order:focus-visible {
+	border-color: #202020;
+
+	background: #202020;
+
+	color: #ffffff;
+
+	text-decoration: none;
+
+	box-shadow:
+		0 7px 18px
+		rgba(
+			0,
+			0,
+			0,
+			0.18
+		);
+
+	transform:
+		translateY(-1px);
+}
+
+
+.eilmo-cf-cart-drawer__order:focus-visible {
+	outline:
+		3px solid
+		rgba(
+			0,
+			0,
+			0,
+			0.16
+		);
+
+	outline-offset: 3px;
+}
+
+
+.eilmo-cf-cart-drawer__order:active {
+	transform:
+		translateY(0);
+}
+
+
+.eilmo-cf-cart-drawer__order:disabled,
+.eilmo-cf-cart-drawer__order.is-disabled {
+	border-color: #d1d5db;
+
+	background: #e5e7eb;
+
+	color: #9ca3af;
+
+	box-shadow: none;
+
+	transform: none;
+
+	cursor: not-allowed;
+
+	pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Loading
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-drawer.is-loading
+	.eilmo-cf-cart-drawer__body,
+.eilmo-cf-cart-drawer.is-loading
+	.eilmo-cf-cart-drawer__footer {
+	opacity: 0.68;
+}
+
+
+.eilmo-cf-cart-drawer.is-loading
+	.eilmo-cf-cart-drawer__quantity-button,
+.eilmo-cf-cart-drawer.is-loading
+	.eilmo-cf-cart-drawer__remove,
+.eilmo-cf-cart-drawer.is-loading
+	.eilmo-cf-cart-drawer__order {
+	pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Mobile
+ * --------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+	.eilmo-cf-cart-trigger {
+		width: 42px;
+		height: 42px;
+	}
+
+	.eilmo-cf-cart-trigger__icon {
+		width: 24px;
+		height: 24px;
+
+		font-size: 24px;
+	}
+
+	.eilmo-cf-cart-trigger__icon svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.eilmo-cf-cart-trigger__count {
+		top: -2px;
+		right: -3px;
+
+		min-width: 20px;
+		height: 20px;
+
+		padding:
+			0 4px;
+
+		font-size: 10px;
+	}
+
+	.eilmo-cf-cart-drawer[
+		data-position="right"
+	]
+		.eilmo-cf-cart-drawer__panel,
+	.eilmo-cf-cart-drawer[
+		data-position="left"
+	]
+		.eilmo-cf-cart-drawer__panel {
+		width: 100%;
+	}
+
+	.eilmo-cf-cart-drawer[
+		data-position="bottom"
+	]
+		.eilmo-cf-cart-drawer__panel {
+		width: 100%;
+
+		max-height: 90dvh;
+
+		border-radius:
+			20px 20px 0 0;
+	}
+
+	.eilmo-cf-cart-drawer__header {
+		padding: 16px;
+	}
+
+	.eilmo-cf-cart-drawer__body {
+		padding:
+			4px 16px 18px;
+	}
+
+	.eilmo-cf-cart-drawer__footer {
+		padding: 16px;
+	}
+
+	.eilmo-cf-cart-drawer__item {
+		grid-template-columns:
+			68px minmax(0, 1fr);
+
+		gap: 12px;
+	}
+
+	.eilmo-cf-cart-drawer__image {
+		width: 68px;
+		height: 68px;
+	}
+
+	.eilmo-cf-cart-drawer__title {
+		font-size: 18px;
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Reduced Motion
+ * --------------------------------------------------------- */
+
+@media (
+	prefers-reduced-motion:
+	reduce
+) {
+
+	.eilmo-cf-cart-trigger,
+	.eilmo-cf-cart-drawer__backdrop,
+	.eilmo-cf-cart-drawer__panel,
+	.eilmo-cf-cart-drawer__close,
+	.eilmo-cf-cart-drawer__close svg,
+	.eilmo-cf-cart-drawer__remove,
+	.eilmo-cf-cart-drawer__quantity-button,
+	.eilmo-cf-cart-drawer__order {
+		transition-duration: 1ms;
+	}
+
+	.eilmo-cf-cart-trigger__count,
+	.eilmo-cf-cart-trigger__count::before,
+	.eilmo-cf-cart-trigger__count::after {
+		animation: none;
+	}
+}

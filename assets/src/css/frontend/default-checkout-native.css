@@ -1,0 +1,65 @@
+/**
+ * Eilmo Default Checkout functional layer.
+ *
+ * This file intentionally contains only structure/accessibility required for the
+ * native WooCommerce bridge. It owns no palette, typography, spacing or visual
+ * theme. When "Use Plugin Checkout Styling" is OFF, this is the only Eilmo CSS
+ * left on the page so the active theme can own the checkout presentation.
+ */
+
+.eilmo-cf-native-delivery-slot,
+.eilmo-cf-native-payment-controls,
+.eilmo-cf-native-gateway-host {
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.eilmo-cf-native-delivery-slot *,
+.eilmo-cf-native-payment-controls *,
+.eilmo-cf-native-delivery-slot *::before,
+.eilmo-cf-native-delivery-slot *::after,
+.eilmo-cf-native-payment-controls *::before,
+.eilmo-cf-native-payment-controls *::after {
+	box-sizing: border-box;
+}
+
+.eilmo-cf-native-visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.eilmo-cf-native-payment-methods[hidden],
+.eilmo-cf-native-delivery-card[hidden],
+.eilmo-cf-native-option-card[hidden],
+.eilmo-cf-native-gateway-grid > li.wc_payment_method[hidden] {
+	display: none;
+}
+
+/*
+ * v2.2.4.1: the real WooCommerce gateway list is rendered directly inside
+ * Eilmo's left-side adapter. No gateway DOM is moved or cloned in JavaScript.
+ */
+.eilmo-cf-native-gateway-host > ul.wc_payment_methods {
+	visibility: visible;
+	max-height: none;
+	overflow: visible;
+}
+
+/* Only WooCommerce's own checkout blocker/loader should be visible. */
+.eilmo-cf-native-loading-spinner {
+	display: none;
+}
+
+/* Some themes add a second pseudo-element spinner on WooCommerce's blocker. */
+.eilmo-cf-native-checkout .blockUI.blockOverlay::after {
+	content: none;
+	display: none;
+}

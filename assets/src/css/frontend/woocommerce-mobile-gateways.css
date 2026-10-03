@@ -1,0 +1,53 @@
+/* Keep Eilmo's direct gateways in the native WooCommerce payment list. */
+form.checkout #payment li.payment_method_eilmo_bkash > label img,
+form.checkout #payment li.payment_method_eilmo_nagad > label img {
+	display: inline-block;
+	width: auto;
+	max-width: 100px;
+	height: auto;
+	max-height: 1.6em;
+	margin: 0 0 0 0.5em;
+	padding: 0;
+	vertical-align: middle;
+	object-fit: contain;
+	box-shadow: none;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment {
+	width: 100%;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment__account,
+form.checkout #payment .eilmo-cf-wc-manual-payment__instructions,
+form.checkout #payment .eilmo-cf-wc-manual-payment__transaction,
+form.checkout #payment .eilmo-cf-wc-manual-payment__proof {
+	clear: both;
+	margin: 0 0 0.75em;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment__account-label {
+	margin-right: 0.4em;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment__transaction {
+	float: none;
+	width: 100%;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment__transaction label,
+form.checkout #payment .eilmo-cf-wc-manual-payment__proof-label,
+form.checkout #payment .eilmo-cf-wc-manual-payment__proof-help {
+	display: block;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment__transaction .input-text,
+form.checkout #payment .eilmo-cf-wc-manual-payment__proof-file {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+}
+
+form.checkout #payment .eilmo-cf-wc-manual-payment__proof-help {
+	margin-top: 0.35em;
+	line-height: 1.4;
+}

@@ -1,0 +1,1141 @@
+/* ---------------------------------------------------------
+ * WooCommerce Orders Courier column
+ * --------------------------------------------------------- */
+
+th.column-eilmo_cf_courier_success,
+td.column-eilmo_cf_courier_success,
+.column-eilmo_cf_courier_success {
+	box-sizing: border-box;
+}
+
+/* WooCommerce applies width: 12ch to every Orders table cell. Keep the
+ * Courier Performance column readable at the merchant-requested fixed size. */
+body.post-type-shop_order .wp-list-table th.column-eilmo_cf_courier_success,
+body.post-type-shop_order .wp-list-table td.column-eilmo_cf_courier_success,
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_courier_success,
+body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_courier_success {
+	width: 140px ;
+	min-width: 140px ;
+	max-width: 140px ;
+}
+
+td.column-eilmo_cf_courier_success {
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.eilmo-cf-courier {
+	display: grid;
+	gap: 9px;
+
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+ * Courier Success stats
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier__stats {
+	display: grid;
+	gap: 6px;
+
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+}
+
+.eilmo-cf-courier__provider {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 8px;
+
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+
+	font-size: 12px;
+	line-height: 1.45;
+}
+
+.eilmo-cf-courier__provider strong {
+	min-width: 0;
+	max-width: 100%;
+
+	color: #1d2327;
+
+	white-space: nowrap;
+}
+
+.eilmo-cf-courier__provider span {
+	min-width: 0;
+	max-width: 130px;
+
+	color: #50575e;
+	font-variant-numeric: tabular-nums;
+
+	white-space: nowrap;
+}
+
+/* ---------------------------------------------------------
+ * Courier actions
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier__actions {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 5px;
+
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+}
+
+.eilmo-cf-courier__action-block {
+	display: grid;
+	gap: 3px;
+	width: 100%;
+	min-width: 0;
+}
+
+.eilmo-cf-courier__action-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 34px;
+	align-items: stretch;
+	gap: 5px;
+	width: 100%;
+	min-width: 0;
+}
+
+.eilmo-cf-courier__actions .button {
+	display: block;
+
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+
+	box-sizing: border-box;
+
+	height: auto;
+	min-height: 30px;
+
+	margin: 0;
+	padding: 4px 8px;
+
+	text-align: center;
+	line-height: 1.35;
+
+	white-space: normal;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+.eilmo-cf-courier__actions .eilmo-cf-courier__edit-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	min-width: 34px;
+	max-width: 34px;
+	padding: 0;
+	border-color: #c3c4c7;
+	background: #fff;
+	color: #50575e;
+}
+
+.eilmo-cf-courier__edit-button .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+.eilmo-cf-courier__edit-button:hover:not(:disabled),
+.eilmo-cf-courier__edit-button:focus:not(:disabled) {
+	border-color: #2271b1;
+	color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.eilmo-cf-courier__check {
+	display: grid;
+	gap: 4px;
+	width: 100%;
+}
+
+.eilmo-cf-courier__check .button {
+	width: 100%;
+	min-height: 30px;
+	margin: 0;
+	white-space: normal;
+}
+
+.eilmo-cf-courier__check small {
+	color: #646970;
+	font-size: 10px;
+	line-height: 1.3;
+}
+
+/* ---------------------------------------------------------
+ * Combined courier performance
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier__risk {
+	display: grid;
+	gap: 8px;
+	width: 100%;
+	min-width: 0;
+}
+
+.eilmo-cf-courier__risk-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 8px;
+}
+
+.eilmo-cf-courier__risk-bar {
+	display: grid;
+	grid-template-columns: repeat(10, minmax(3px, 1fr));
+	gap: 2px;
+	min-width: 0;
+}
+
+.eilmo-cf-courier__risk-segment {
+	height: 10px;
+	border-radius: 2px;
+	background: #dcdcde;
+}
+
+.eilmo-cf-courier__risk-segment.is-success {
+	background: #00a32a;
+}
+
+.eilmo-cf-courier__risk-segment.is-failure {
+	background: #d63638;
+}
+
+.eilmo-cf-courier__risk-segment.is-neutral {
+	background: #c3c4c7;
+}
+
+.eilmo-cf-courier__risk-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 11px;
+	line-height: 1.2;
+	white-space: nowrap;
+}
+
+.eilmo-cf-courier__risk-status::before {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #646970;
+	content: "";
+}
+
+.eilmo-cf-courier__risk.is-trusted .eilmo-cf-courier__risk-status { color: #008a20; }
+.eilmo-cf-courier__risk.is-trusted .eilmo-cf-courier__risk-status::before { background: #00a32a; }
+.eilmo-cf-courier__risk.is-review .eilmo-cf-courier__risk-status { color: #8a6500; }
+.eilmo-cf-courier__risk.is-review .eilmo-cf-courier__risk-status::before { background: #dba617; }
+.eilmo-cf-courier__risk.is-high .eilmo-cf-courier__risk-status { color: #b54708; }
+.eilmo-cf-courier__risk.is-high .eilmo-cf-courier__risk-status::before { background: #f79009; }
+.eilmo-cf-courier__risk.is-critical .eilmo-cf-courier__risk-status { color: #b32d2e; }
+.eilmo-cf-courier__risk.is-critical .eilmo-cf-courier__risk-status::before { background: #d63638; }
+.eilmo-cf-courier__risk.is-steadfast.is-review .eilmo-cf-courier__risk-segment.is-success { background: #dba617; }
+.eilmo-cf-courier__risk.is-steadfast.is-high .eilmo-cf-courier__risk-segment.is-success { background: #f79009; }
+.eilmo-cf-courier__risk.is-steadfast.is-critical .eilmo-cf-courier__risk-segment.is-success { background: #d63638; }
+.eilmo-cf-courier__risk.is-unknown .eilmo-cf-courier__risk-status,
+.eilmo-cf-courier__risk.is-unavailable .eilmo-cf-courier__risk-status { color: #646970; }
+
+/* ---------------------------------------------------------
+ * Existing courier reference
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier__reference {
+	display: block;
+
+	width: 100%;
+	max-width: 100%;
+
+	margin-top: -1px;
+
+	color: #646970;
+
+	font-size: 10px;
+	line-height: 1.3;
+
+	overflow: hidden;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+/* ---------------------------------------------------------
+ * Courier notices / AJAX messages
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier__notice,
+.eilmo-cf-courier__message {
+	width: 100%;
+	max-width: 100%;
+
+	font-size: 11px;
+	line-height: 1.35;
+
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+.eilmo-cf-courier__notice,
+.eilmo-cf-courier__message.is-error {
+	color: #b32d2e;
+}
+
+.eilmo-cf-courier__message.is-success {
+	color: #008a20;
+}
+
+/* ---------------------------------------------------------
+ * Modal page lock
+ * --------------------------------------------------------- */
+
+html.eilmo-cf-courier-modal-open,
+html.eilmo-cf-courier-modal-open body {
+	overflow: hidden;
+}
+
+/*
+ * Explicit hidden state is important because the modal
+ * itself uses display:flex when visible.
+ */
+.eilmo-cf-courier-modal[hidden],
+.eilmo-cf-courier-modal [hidden] {
+	display: none;
+}
+
+/* ---------------------------------------------------------
+ * Courier modal
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100100;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 24px;
+
+	box-sizing: border-box;
+}
+
+.eilmo-cf-courier-modal__backdrop {
+	position: absolute;
+	inset: 0;
+
+	background: rgba(0, 0, 0, 0.52);
+}
+
+.eilmo-cf-courier-modal__dialog {
+	position: relative;
+	z-index: 1;
+
+	width: min(860px, 100%);
+	max-width: 860px;
+	max-height: calc(100vh - 48px);
+
+	overflow: hidden;
+
+	background: #fff;
+	border-radius: 8px;
+
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+
+	box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+ * Modal header
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal__header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 20px;
+
+	padding: 20px 22px 16px;
+
+	border-bottom: 1px solid #dcdcde;
+}
+
+.eilmo-cf-courier-modal__header > div {
+	min-width: 0;
+}
+
+.eilmo-cf-courier-modal__header h2 {
+	margin: 0;
+
+	font-size: 20px;
+	line-height: 1.25;
+}
+
+.eilmo-cf-courier-modal__header p {
+	margin: 5px 0 0;
+
+	color: #646970;
+
+	overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+ * Modal close
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal__close {
+	flex: 0 0 auto;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 34px;
+	height: 34px;
+
+	margin: -4px -6px 0 0;
+	padding: 0;
+
+	border: 0;
+	background: transparent;
+
+	color: #50575e;
+
+	font-size: 30px;
+	line-height: 1;
+
+	cursor: pointer;
+}
+
+.eilmo-cf-courier-modal__close:hover,
+.eilmo-cf-courier-modal__close:focus {
+	color: #1d2327;
+}
+
+/* ---------------------------------------------------------
+ * Modal body
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal__body {
+	max-height: calc(100vh - 150px);
+
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	padding: 20px 22px 22px;
+
+	box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+ * Loading state
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal__loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+
+	min-height: 150px;
+
+	color: #50575e;
+}
+
+.eilmo-cf-courier-modal__loading .spinner {
+	float: none;
+
+	margin: 0;
+}
+
+/* ---------------------------------------------------------
+ * Modal error
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal__error {
+	margin-bottom: 16px;
+	padding: 10px 12px;
+
+	border-left: 4px solid #d63638;
+
+	background: #fcf0f1;
+	color: #8a2424;
+
+	box-sizing: border-box;
+
+	overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+ * Courier form
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-form-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+
+	width: 100%;
+	min-width: 0;
+}
+
+.eilmo-cf-courier-field {
+	display: grid;
+	gap: 6px;
+
+	min-width: 0;
+	margin: 0;
+}
+
+.eilmo-cf-courier-field--wide {
+	grid-column: 1 / -1;
+}
+
+.eilmo-cf-courier-field > span {
+	color: #1d2327;
+
+	font-weight: 600;
+}
+
+.eilmo-cf-courier-field input,
+.eilmo-cf-courier-field select,
+.eilmo-cf-courier-field textarea {
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+
+	box-sizing: border-box;
+}
+
+.eilmo-cf-courier-field textarea {
+	resize: vertical;
+}
+
+/* ---------------------------------------------------------
+ * Modal footer
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-modal__footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 8px;
+
+	margin-top: 22px;
+	padding-top: 16px;
+
+	border-top: 1px solid #dcdcde;
+}
+
+/* ---------------------------------------------------------
+ * WordPress mobile admin
+ * --------------------------------------------------------- */
+
+@media (max-width: 782px) {
+
+	td.column-eilmo_cf_courier_success {
+		overflow: visible;
+	}
+
+	.eilmo-cf-courier {
+		max-width: 100%;
+		overflow: visible;
+	}
+
+	.eilmo-cf-courier__provider {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.eilmo-cf-courier__provider span {
+		max-width: 140px;
+	}
+
+	.eilmo-cf-courier-modal {
+		align-items: flex-start;
+
+		padding: 12px;
+	}
+
+	.eilmo-cf-courier-modal__dialog {
+		width: 100%;
+		max-width: 100%;
+		max-height: calc(100vh - 24px);
+	}
+
+	.eilmo-cf-courier-modal__header {
+		padding: 16px 16px 13px;
+	}
+
+	.eilmo-cf-courier-modal__header h2 {
+		font-size: 18px;
+	}
+
+	.eilmo-cf-courier-modal__body {
+		max-height: calc(100vh - 128px);
+
+		padding: 16px;
+	}
+
+	.eilmo-cf-courier-form-grid {
+		grid-template-columns: 1fr;
+		gap: 14px;
+	}
+
+	.eilmo-cf-courier-field--wide {
+		grid-column: auto;
+	}
+
+	.eilmo-cf-courier-modal__footer {
+		align-items: stretch;
+		flex-direction: column-reverse;
+	}
+
+	.eilmo-cf-courier-modal__footer .button {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+[data-eilmo-courier-stat] {
+	font-weight: 700;
+	transition: color 0.2s ease;
+}
+
+[data-eilmo-courier-stat].is-success-ratio-trusted {
+	color: #00a32a;
+}
+
+[data-eilmo-courier-stat].is-success-ratio-review {
+	color: #8a6500;
+}
+
+[data-eilmo-courier-stat].is-success-ratio-high {
+	color: #b54708;
+}
+
+[data-eilmo-courier-stat].is-success-ratio-critical {
+	color: #d63638;
+}
+
+[data-eilmo-courier-stat].is-success-ratio-neutral {
+	color: #646970;
+}
+
+[data-eilmo-courier-stat="combined"] {
+	cursor: pointer;
+	text-decoration: underline dotted;
+	text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------
+ * Rich BD Courier breakdown popover
+ * --------------------------------------------------------- */
+
+.eilmo-cf-courier-breakdown[hidden] {
+	display: none ;
+}
+
+.eilmo-cf-courier-breakdown {
+	position: fixed;
+	z-index: 100200;
+	box-sizing: border-box;
+	width: 340px;
+	max-width: calc(100vw - 24px);
+	overflow: hidden;
+	border: 1px solid #dcdcde;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 18px 50px rgba(30, 41, 59, 0.22), 0 3px 12px rgba(30, 41, 59, 0.1);
+	color: #1d2327;
+	font-size: 12px;
+	line-height: 1.4;
+}
+
+.eilmo-cf-courier-breakdown::before {
+	position: absolute;
+	left: 50%;
+	width: 10px;
+	height: 10px;
+	transform: translateX(-50%) rotate(45deg);
+	border: 1px solid #dcdcde;
+	background: #f6f7ff;
+	content: "";
+}
+
+.eilmo-cf-courier-breakdown[data-placement="bottom"]::before {
+	top: -6px;
+	border-right: 0;
+	border-bottom: 0;
+}
+
+.eilmo-cf-courier-breakdown[data-placement="top"]::before {
+	bottom: -6px;
+	border-top: 0;
+	border-left: 0;
+	background: #f8fafc;
+}
+
+.eilmo-cf-courier-breakdown__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	padding: 14px 16px;
+	background: linear-gradient(135deg, #f6f7ff 0%, #f8fbff 100%);
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.eilmo-cf-courier-breakdown__header > div:first-child {
+	display: grid;
+	gap: 1px;
+}
+
+.eilmo-cf-courier-breakdown__eyebrow {
+	color: #646970;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+.eilmo-cf-courier-breakdown__title {
+	font-size: 14px;
+	line-height: 1.25;
+}
+
+.eilmo-cf-courier-breakdown__total {
+	flex: 0 0 auto;
+	padding: 5px 8px;
+	border-radius: 999px;
+	background: #edfaef;
+	color: #008a20;
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.eilmo-cf-courier-breakdown__total.is-review { background: #fff8d6; color: #8a6500; }
+.eilmo-cf-courier-breakdown__total.is-high { background: #fff1e7; color: #b54708; }
+.eilmo-cf-courier-breakdown__total.is-critical { background: #fcf0f1; color: #b32d2e; }
+.eilmo-cf-courier-breakdown__total.is-unknown { background: #f0f0f1; color: #646970; }
+
+.eilmo-cf-courier-breakdown__store {
+	padding: 11px 16px 12px;
+	border-bottom: 1px solid #e2e8f0;
+	background: #fff;
+}
+
+.eilmo-cf-courier-breakdown__store-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.eilmo-cf-courier-breakdown__store-header > div {
+	display: grid;
+	gap: 1px;
+}
+
+.eilmo-cf-courier-breakdown__store-title {
+	font-size: 13px;
+	line-height: 1.25;
+}
+
+.eilmo-cf-courier-breakdown__store-count {
+	flex: 0 0 auto;
+	padding: 4px 8px;
+	border-radius: 999px;
+	background: #f0f6fc;
+	color: #1d4ed8;
+	font-size: 10px;
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.eilmo-cf-courier-breakdown__store-stats {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 6px;
+	margin-top: 9px;
+}
+
+.eilmo-cf-courier-breakdown__store-stats > span {
+	display: grid;
+	gap: 1px;
+	min-width: 0;
+	padding: 6px 4px;
+	border: 1px solid #f0f0f1;
+	border-radius: 7px;
+	background: #f8fafc;
+	text-align: center;
+}
+
+.eilmo-cf-courier-breakdown__store-stats small {
+	overflow: hidden;
+	color: #646970;
+	font-size: 8px;
+	font-weight: 650;
+	text-overflow: ellipsis;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.eilmo-cf-courier-breakdown__store-stats strong {
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+
+.eilmo-cf-courier-breakdown__store-empty {
+	margin-top: 8px;
+	color: #646970;
+	font-size: 11px;
+}
+
+.eilmo-cf-courier-breakdown__body {
+	display: grid;
+	max-height: 310px;
+	overflow-y: auto;
+	padding: 7px 10px;
+}
+
+.eilmo-cf-courier-breakdown__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 6px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.eilmo-cf-courier-breakdown__row:last-child {
+	border-bottom: 0;
+}
+
+.eilmo-cf-courier-breakdown__name {
+	min-width: 0;
+	font-weight: 650;
+	overflow-wrap: anywhere;
+}
+
+.eilmo-cf-courier-breakdown__detail {
+	display: inline-flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 7px;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.eilmo-cf-courier-breakdown__row.is-empty {
+	color: #8c8f94;
+}
+
+.eilmo-cf-courier-breakdown__row.is-empty .eilmo-cf-courier-breakdown__detail strong {
+	font-weight: 500;
+}
+
+.eilmo-cf-courier-breakdown__badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 42px;
+	padding: 2px 6px;
+	border-radius: 999px;
+	background: #f0f0f1;
+	font-size: 10px;
+	font-weight: 800;
+}
+
+.eilmo-cf-courier-breakdown__badge.is-trusted { background: #edfaef; color: #008a20; }
+.eilmo-cf-courier-breakdown__badge.is-review { background: #fff8d6; color: #8a6500; }
+.eilmo-cf-courier-breakdown__badge.is-high { background: #fff1e7; color: #b54708; }
+.eilmo-cf-courier-breakdown__badge.is-critical { background: #fcf0f1; color: #b32d2e; }
+.eilmo-cf-courier-breakdown__badge.is-unknown { background: #f0f0f1; color: #646970; }
+
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__header { background: #f6f7f7; border-top: 3px solid #8c8f94; }
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__header.is-trusted { background: #edfaef; border-color: #338a3e; }
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__header.is-review { background: #fff8d6; border-color: #dba617; }
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__header.is-high { background: #fff1e7; border-color: #f79009; }
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__header.is-critical { background: #fcf0f1; border-color: #d63638; }
+.eilmo-cf-courier-breakdown.is-steadfast[data-risk-band="trusted"] { --eilmo-cf-arrow-surface: #edfaef; --eilmo-cf-arrow-border: #338a3e; }
+.eilmo-cf-courier-breakdown.is-steadfast[data-risk-band="review"] { --eilmo-cf-arrow-surface: #fff8d6; --eilmo-cf-arrow-border: #dba617; }
+.eilmo-cf-courier-breakdown.is-steadfast[data-risk-band="high"] { --eilmo-cf-arrow-surface: #fff1e7; --eilmo-cf-arrow-border: #f79009; }
+.eilmo-cf-courier-breakdown.is-steadfast[data-risk-band="critical"] { --eilmo-cf-arrow-surface: #fcf0f1; --eilmo-cf-arrow-border: #d63638; }
+.eilmo-cf-courier-breakdown.is-steadfast[data-risk-band="unknown"] { --eilmo-cf-arrow-surface: #f6f7f7; --eilmo-cf-arrow-border: #8c8f94; }
+.eilmo-cf-courier-breakdown.is-steadfast[data-placement="bottom"]::before {
+	background: var(--eilmo-cf-arrow-surface, #f6f7f7);
+	border-color: var(--eilmo-cf-arrow-border, #8c8f94);
+}
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__row { gap: 12px; }
+.eilmo-cf-courier-breakdown.is-steadfast .eilmo-cf-courier-breakdown__row strong { text-align: right; overflow-wrap: anywhere; }
+
+.eilmo-cf-courier-breakdown__empty {
+	padding: 22px 12px;
+	color: #646970;
+	text-align: center;
+}
+
+.eilmo-cf-courier-breakdown__footer {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1px;
+	border-top: 1px solid #e2e8f0;
+	background: #e2e8f0;
+}
+
+.eilmo-cf-courier-breakdown__footer > span {
+	display: grid;
+	gap: 1px;
+	padding: 9px 10px;
+	background: #f8fafc;
+	text-align: center;
+}
+
+.eilmo-cf-courier-breakdown__footer small {
+	color: #646970;
+	font-size: 9px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.eilmo-cf-courier-breakdown__footer strong {
+	font-size: 13px;
+	font-variant-numeric: tabular-nums;
+}
+
+
+/* Eilmo v2.0.26 fixed WooCommerce order/meta column widths */
+.woocommerce_page_wc-orders .wp-list-table.orders,
+.woocommerce_page_wc-orders table.wc-orders-list-table,
+.post-type-shop_order .wp-list-table.orders {
+	table-layout: fixed ;
+	width: max(1650px, 100%) ;
+	min-width: 1650px ;
+}
+.woocommerce_page_wc-orders #order_number,
+.woocommerce_page_wc-orders th.column-order_number,
+.woocommerce_page_wc-orders td.column-order_number,
+.woocommerce_page_wc-orders th.column-order_title,
+.woocommerce_page_wc-orders td.column-order_title,
+.post-type-shop_order #order_title,
+.post-type-shop_order th.column-order_title,
+.post-type-shop_order td.column-order_title {
+	width: 110px ;
+	min-width: 110px ;
+	max-width: 110px ;
+	box-sizing: border-box ;
+	overflow: hidden ;
+}
+.woocommerce_page_wc-orders #eilmo_meta_purchase,
+.woocommerce_page_wc-orders th.column-eilmo_meta_purchase,
+.woocommerce_page_wc-orders td.column-eilmo_meta_purchase,
+.post-type-shop_order #eilmo_meta_purchase,
+.post-type-shop_order th.column-eilmo_meta_purchase,
+.post-type-shop_order td.column-eilmo_meta_purchase {
+	width: 90px ;
+	min-width: 90px ;
+	max-width: 90px ;
+	box-sizing: border-box ;
+	text-align: center ;
+	overflow: hidden ;
+}
+
+.woocommerce_page_wc-orders th.column-eilmo_cf_verify_status,
+.woocommerce_page_wc-orders td.column-eilmo_cf_verify_status,
+.post-type-shop_order th.column-eilmo_cf_verify_status,
+.post-type-shop_order td.column-eilmo_cf_verify_status {
+	display: table-cell ;
+	width: 118px ;
+	min-width: 118px ;
+	max-width: 118px ;
+	box-sizing: border-box ;
+	vertical-align: top ;
+}
+
+
+/* Eilmo v2.0.30 compact verification column widths */
+body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_order_note,
+body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_order_note,
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_order_note,
+body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_order_note {
+	width: 60px ;
+	min-width: 60px ;
+	max-width: 60px ;
+	box-sizing: border-box ;
+	overflow: hidden ;
+}
+
+/* Eilmo v2.0.31 compact Order / Status / Proof widths */
+.woocommerce_page_wc-orders #order_number,
+.woocommerce_page_wc-orders th.column-order_number,
+.woocommerce_page_wc-orders td.column-order_number,
+.woocommerce_page_wc-orders th.column-order_title,
+.woocommerce_page_wc-orders td.column-order_title,
+.post-type-shop_order #order_title,
+.post-type-shop_order th.column-order_title,
+.post-type-shop_order td.column-order_title {
+	width: 90px ;
+	min-width: 90px ;
+	max-width: 90px ;
+}
+.woocommerce_page_wc-orders th.column-eilmo_cf_verify_status,
+.woocommerce_page_wc-orders td.column-eilmo_cf_verify_status,
+.post-type-shop_order th.column-eilmo_cf_verify_status,
+.post-type-shop_order td.column-eilmo_cf_verify_status {
+	width: 80px ;
+	min-width: 80px ;
+	max-width: 80px ;
+}
+.woocommerce_page_wc-orders th.column-eilmo_cf_verify_proof,
+.woocommerce_page_wc-orders td.column-eilmo_cf_verify_proof,
+.post-type-shop_order th.column-eilmo_cf_verify_proof,
+.post-type-shop_order td.column-eilmo_cf_verify_proof {
+	width: 60px ;
+	min-width: 60px ;
+	max-width: 60px ;
+	overflow: hidden ;
+}
+.eilmo-cf-otm-status {
+	display: flex ;
+	flex-direction: column ;
+	gap: 4px ;
+	width: 100% ;
+	max-width: 100% ;
+}
+.eilmo-cf-otm-status-select {
+	width: 100% ;
+	max-width: 100% ;
+	min-width: 0 ;
+}
+.eilmo-cf-otm-status-save {
+	display: inline-flex ;
+	width: 100% ;
+	max-width: 100% ;
+	min-width: 0 ;
+	justify-content: center ;
+}
+
+.eilmo-cf-otm-proof-open img { width: 42px ; height: 36px ; }
+.eilmo-cf-otm-proof-open span { font-size: 9px ; }
+
+/* Eilmo v2.0.37 balanced fixed order-list widths.
+ * These are intentionally exact: width = min-width = max-width. */
+body.woocommerce_page_wc-orders .wp-list-table,
+body.post-type-shop_order .wp-list-table { table-layout: fixed ; width: auto ; min-width: 0 ; max-width: none ; }
+body.woocommerce_page_wc-orders .wp-list-table th, body.woocommerce_page_wc-orders .wp-list-table td,
+body.post-type-shop_order .wp-list-table th, body.post-type-shop_order .wp-list-table td { box-sizing:border-box; width:110px; min-width:110px; max-width:110px; }
+body.woocommerce_page_wc-orders .wp-list-table .check-column, body.post-type-shop_order .wp-list-table .check-column { width:36px; min-width:36px; max-width:36px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-order_number, body.woocommerce_page_wc-orders .wp-list-table td.column-order_number, body.woocommerce_page_wc-orders .wp-list-table th.column-order_title, body.woocommerce_page_wc-orders .wp-list-table td.column-order_title, body.post-type-shop_order .wp-list-table th.column-order_number, body.post-type-shop_order .wp-list-table td.column-order_number, body.post-type-shop_order .wp-list-table th.column-order_title, body.post-type-shop_order .wp-list-table td.column-order_title { width:110px; min-width:110px; max-width:110px; overflow:hidden; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_customer, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_customer, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_customer, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_customer { width:180px; min-width:180px; max-width:180px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_products, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_products, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_products, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_products { width:150px; min-width:150px; max-width:150px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_status, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_status, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_status, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_status { width:110px; min-width:110px; max-width:110px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_payment, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_payment, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_payment, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_payment { width:135px; min-width:135px; max-width:135px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_proof, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_proof, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_proof, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_proof { width:90px; min-width:90px; max-width:90px; overflow:hidden; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_order_note, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_order_note, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_order_note, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_order_note { width:80px; min-width:80px; max-width:80px; overflow:hidden; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_courier_success, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_courier_success, body.post-type-shop_order .wp-list-table th.column-eilmo_cf_courier_success, body.post-type-shop_order .wp-list-table td.column-eilmo_cf_courier_success { width:220px; min-width:220px; max-width:220px; overflow:visible; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-order_date, body.woocommerce_page_wc-orders .wp-list-table td.column-order_date, body.woocommerce_page_wc-orders .wp-list-table th.column-date, body.woocommerce_page_wc-orders .wp-list-table td.column-date, body.post-type-shop_order .wp-list-table th.column-order_date, body.post-type-shop_order .wp-list-table td.column-order_date, body.post-type-shop_order .wp-list-table th.column-date, body.post-type-shop_order .wp-list-table td.column-date { width:85px; min-width:85px; max-width:85px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_meta_purchase, body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_meta_purchase, body.post-type-shop_order .wp-list-table th.column-eilmo_meta_purchase, body.post-type-shop_order .wp-list-table td.column-eilmo_meta_purchase { width:80px; min-width:80px; max-width:80px; overflow:hidden; text-align:center; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-order_total, body.woocommerce_page_wc-orders .wp-list-table td.column-order_total, body.woocommerce_page_wc-orders .wp-list-table th.column-total, body.woocommerce_page_wc-orders .wp-list-table td.column-total, body.post-type-shop_order .wp-list-table th.column-order_total, body.post-type-shop_order .wp-list-table td.column-order_total, body.post-type-shop_order .wp-list-table th.column-total, body.post-type-shop_order .wp-list-table td.column-total { width:80px; min-width:80px; max-width:80px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-origin, body.woocommerce_page_wc-orders .wp-list-table td.column-origin, body.woocommerce_page_wc-orders .wp-list-table th.column-order_origin, body.woocommerce_page_wc-orders .wp-list-table td.column-order_origin, body.post-type-shop_order .wp-list-table th.column-origin, body.post-type-shop_order .wp-list-table td.column-origin, body.post-type-shop_order .wp-list-table th.column-order_origin, body.post-type-shop_order .wp-list-table td.column-order_origin { width:90px; min-width:90px; max-width:90px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-wc_actions, body.woocommerce_page_wc-orders .wp-list-table td.column-wc_actions, body.woocommerce_page_wc-orders .wp-list-table th.column-order_actions, body.woocommerce_page_wc-orders .wp-list-table td.column-order_actions, body.post-type-shop_order .wp-list-table th.column-wc_actions, body.post-type-shop_order .wp-list-table td.column-wc_actions, body.post-type-shop_order .wp-list-table th.column-order_actions, body.post-type-shop_order .wp-list-table td.column-order_actions { width:80px; min-width:80px; max-width:80px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-billing_address, body.woocommerce_page_wc-orders .wp-list-table td.column-billing_address, body.woocommerce_page_wc-orders .wp-list-table th.column-shipping_address, body.woocommerce_page_wc-orders .wp-list-table td.column-shipping_address, body.post-type-shop_order .wp-list-table th.column-billing_address, body.post-type-shop_order .wp-list-table td.column-billing_address, body.post-type-shop_order .wp-list-table th.column-shipping_address, body.post-type-shop_order .wp-list-table td.column-shipping_address { width:160px; min-width:160px; max-width:160px; }
+body.woocommerce_page_wc-orders .wp-list-table th.column-order_status, body.woocommerce_page_wc-orders .wp-list-table td.column-order_status, body.woocommerce_page_wc-orders .wp-list-table th.column-status, body.woocommerce_page_wc-orders .wp-list-table td.column-status, body.post-type-shop_order .wp-list-table th.column-order_status, body.post-type-shop_order .wp-list-table td.column-order_status, body.post-type-shop_order .wp-list-table th.column-status, body.post-type-shop_order .wp-list-table td.column-status { width:100px; min-width:100px; max-width:100px; }
+body.woocommerce_page_wc-orders .column-eilmo_cf_courier_success .button, body.post-type-shop_order .column-eilmo_cf_courier_success .button { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; overflow-wrap:normal; word-break:normal; }
+
+/* Eilmo 2.0.39 requested verification-column widths. */
+body.woocommerce_page_wc-orders .wp-list-table th.column-order_number,
+body.woocommerce_page_wc-orders .wp-list-table td.column-order_number,
+body.woocommerce_page_wc-orders .wp-list-table th.column-order_title,
+body.woocommerce_page_wc-orders .wp-list-table td.column-order_title,
+body.post-type-shop_order .wp-list-table th.column-order_number,
+body.post-type-shop_order .wp-list-table td.column-order_number,
+body.post-type-shop_order .wp-list-table th.column-order_title,
+body.post-type-shop_order .wp-list-table td.column-order_title {
+    width: 120px ;
+    min-width: 120px ;
+    max-width: 120px ;
+}
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_proof,
+body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_proof,
+body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_proof,
+body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_proof {
+    width: 120px ;
+    min-width: 120px ;
+    max-width: 120px ;
+}
+body.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_verify_order_note,
+body.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_verify_order_note,
+body.post-type-shop_order .wp-list-table th.column-eilmo_cf_verify_order_note,
+body.post-type-shop_order .wp-list-table td.column-eilmo_cf_verify_order_note {
+    width: 100px ;
+    min-width: 100px ;
+    max-width: 100px ;
+}
+
+
+/* Eilmo v2.0.42 standalone Orders layout (Order Table Management OFF).
+ * ONLY Courier Performance is fixed. Every other WooCommerce column is
+ * returned to native/automatic sizing so the full table width is shared. */
+body.eilmo-cf-qom-disabled.woocommerce_page_wc-orders .wp-list-table,
+body.eilmo-cf-qom-disabled.post-type-shop_order .wp-list-table {
+	table-layout: auto ;
+	width: 100% ;
+	min-width: 100% ;
+	max-width: 100% ;
+}
+
+/* Managed-mode CSS earlier in this stylesheet intentionally fixes many widths.
+ * Reset ALL of those widths in standalone/native mode before fixing courier. */
+body.eilmo-cf-qom-disabled.woocommerce_page_wc-orders .wp-list-table th,
+body.eilmo-cf-qom-disabled.woocommerce_page_wc-orders .wp-list-table td,
+body.eilmo-cf-qom-disabled.post-type-shop_order .wp-list-table th,
+body.eilmo-cf-qom-disabled.post-type-shop_order .wp-list-table td {
+	width: auto ;
+	min-width: 0 ;
+	max-width: none ;
+	box-sizing: border-box ;
+}
+
+body.eilmo-cf-qom-disabled.woocommerce_page_wc-orders .wp-list-table th.column-eilmo_cf_courier_success,
+body.eilmo-cf-qom-disabled.woocommerce_page_wc-orders .wp-list-table td.column-eilmo_cf_courier_success,
+body.eilmo-cf-qom-disabled.post-type-shop_order .wp-list-table th.column-eilmo_cf_courier_success,
+body.eilmo-cf-qom-disabled.post-type-shop_order .wp-list-table td.column-eilmo_cf_courier_success {
+	width: 220px ;
+	min-width: 220px ;
+	max-width: 220px ;
+	box-sizing: border-box ;
+	overflow: visible ;
+}
+body.eilmo-cf-qom-disabled.woocommerce_page_wc-orders .column-eilmo_cf_courier_success .eilmo-cf-courier,
+body.eilmo-cf-qom-disabled.post-type-shop_order .column-eilmo_cf_courier_success .eilmo-cf-courier {
+	width: 100% ;
+	min-width: 0 ;
+	max-width: 100% ;
+}
+
+
+
+/* Eilmo v2.0.44 customer verification visibility */
+.eilmo-cf-otm-customer .eilmo-cf-otm-phone{font-size:14px;font-weight:700;line-height:1.35;color:#111827;letter-spacing:.1px;white-space:nowrap}
+.eilmo-cf-otm-customer .eilmo-cf-otm-address-lines{font-size:12px;line-height:1.4;color:#3c434a;margin-top:3px}

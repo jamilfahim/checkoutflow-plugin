@@ -1,0 +1,19 @@
+.wp-block-woocommerce-checkout .eilmo-cf-block-field--full {
+	flex: 1 0 100%;
+	max-width: 100%;
+	width: 100%;
+}
+
+.wp-block-woocommerce-checkout .eilmo-cf-block-field--half {
+	flex: 1 0 calc(50% - 8px);
+	max-width: calc(50% - 8px);
+	width: calc(50% - 8px);
+}
+
+@media (max-width: 767px) {
+	.wp-block-woocommerce-checkout .eilmo-cf-block-field--half {
+		flex-basis: 100%;
+		max-width: 100%;
+		width: 100%;
+	}
+}

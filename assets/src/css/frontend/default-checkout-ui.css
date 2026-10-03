@@ -1,0 +1,1031 @@
+/**
+ * Eilmo Default Checkout UI adapter.
+ *
+ * CSS CONTRACT (v2.2.4.0):
+ * - scoped only by the server-rendered `eilmo-cf-native-style` body namespace;
+ * - never imports or depends on Campaign Checkout CSS/classes;
+ * - uses only `--eilmo-cf-native-*` variables owned by Default Checkout;
+ * - avoids forced-priority declarations;
+ * - is enqueued after WooCommerce core and before normal theme styles, so a
+ *   theme/child-theme/custom CSS layer can remain the final visual authority;
+ * - turning “Use Plugin Checkout Styling” OFF prevents this file from loading.
+ *
+ * WooCommerce still owns form markup, gateway inputs, payment fields and the
+ * place-order lifecycle. Eilmo owns only the optional visual presentation and
+ * its explicitly prefixed selector cards.
+ */
+body.eilmo-cf-native-style form.checkout {
+	--eilmo-cf-native-primary: var(--eilmo-cf-native-theme-primary, #6d28d9);
+	--eilmo-cf-native-primary-hover: var(--eilmo-cf-native-theme-primary-hover, #5b21b6);
+	--eilmo-cf-native-primary-soft: var(--eilmo-cf-native-theme-primary-soft, #f3e8ff);
+	--eilmo-cf-native-text: var(--eilmo-cf-native-theme-main-text, #111827);
+	--eilmo-cf-native-muted: var(--eilmo-cf-native-theme-secondary-text, #64748b);
+	--eilmo-cf-native-card: var(--eilmo-cf-native-theme-card-background, #ffffff);
+	--eilmo-cf-native-soft: var(--eilmo-cf-native-theme-soft-background, #f3f4f6);
+	/* Field controls intentionally use the Soft Background token, not Card Background. */
+	--eilmo-cf-native-field: var(--eilmo-cf-native-soft);
+	--eilmo-cf-native-muted-surface: var(--eilmo-cf-native-theme-muted-surface, #f8fafc);
+	--eilmo-cf-native-border: var(--eilmo-cf-native-theme-border, #e5e7eb);
+	--eilmo-cf-native-border-strong: var(--eilmo-cf-native-theme-strong-border, #c4b5fd);
+	--eilmo-cf-native-button-text: var(--eilmo-cf-native-theme-button-text, #ffffff);
+	/* Exact campaign checkout card shadow, shared by both native checkout columns. */
+	--eilmo-cf-native-card-shadow:
+		0 16px 46px rgba(17, 24, 39, 0.04);
+	--eilmo-cf-native-summary-shadow: 0 12px 38px rgba(17, 24, 39, 0.04);
+	/* Campaign Checkout geometry tokens. Native checkout consumes the same visual scale
+	 * without sharing Campaign selectors or behavior. */
+	--eilmo-cf-native-body-size: 15px;
+	--eilmo-cf-native-label-size: 14px;
+	--eilmo-cf-native-label-weight: 500;
+	--eilmo-cf-native-label-line-height: 1.45;
+	--eilmo-cf-native-label-gap: 8px;
+	--eilmo-cf-native-input-size: 16px;
+	--eilmo-cf-native-input-height: 54px;
+	--eilmo-cf-native-control-radius: 13px;
+	--eilmo-cf-native-stack-gap: 18px;
+	--eilmo-cf-native-choice-gap: 8px;
+	color: var(--eilmo-cf-native-text);
+	font-family: inherit;
+	font-size: var(--eilmo-cf-native-body-size);
+	line-height: 1.55;
+}
+
+body.eilmo-cf-native-style form.checkout *,
+body.eilmo-cf-native-style form.checkout *::before,
+body.eilmo-cf-native-style form.checkout *::after {
+	box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+ * WooCommerce section headings / campaign-matched typography
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout #customer_details h3,
+body.eilmo-cf-native-style form.checkout .woocommerce-billing-fields > h3,
+body.eilmo-cf-native-style form.checkout .woocommerce-additional-fields > h3,
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-heading,
+body.eilmo-cf-native-style form.checkout #order_review_heading {
+	margin: 0 0 18px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--eilmo-cf-native-text);
+	font: inherit;
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+}
+
+/*
+ * Eilmo-native checkout control labels.
+ *
+ * These deliberately do not use h1-h6 tags/classes so WooCommerce/theme
+ * heading selectors (for example #customer_details h3) cannot change their
+ * campaign-style label scale.
+ */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-control-label {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	min-height: 21px;
+	margin: 0 0 var(--eilmo-cf-native-label-gap);
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--eilmo-cf-native-text);
+	font-family: inherit;
+	font-size: var(--eilmo-cf-native-label-size);
+	font-weight: var(--eilmo-cf-native-label-weight);
+	line-height: var(--eilmo-cf-native-label-line-height);
+	letter-spacing: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-control-label .required {
+	color: var(--eilmo-cf-native-primary);
+	font: inherit;
+}
+
+/* --------------------------------------------------------------------------
+ * Native customer fields — same field scale as Campaign Checkout
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout #customer_details {
+	width: 100%;
+	margin: 0;
+	padding: 32px 34px;
+	border: 1px solid var(--eilmo-cf-native-border);
+	border-radius: 26px;
+	background: var(--eilmo-cf-native-card);
+	box-shadow: var(--eilmo-cf-native-card-shadow);
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-billing-fields__field-wrapper,
+body.eilmo-cf-native-style form.checkout .woocommerce-additional-fields__field-wrapper {
+	width: 100%;
+}
+
+body.eilmo-cf-native-style form.checkout .form-row {
+	margin-bottom: 18px;
+}
+
+body.eilmo-cf-native-style form.checkout .form-row label,
+body.eilmo-cf-native-style form.checkout .woocommerce-form-row label {
+	display: block;
+	margin: 0 0 var(--eilmo-cf-native-label-gap);
+	padding: 0;
+	color: var(--eilmo-cf-native-text);
+	font: inherit;
+	font-size: var(--eilmo-cf-native-label-size);
+	font-weight: var(--eilmo-cf-native-label-weight);
+	line-height: var(--eilmo-cf-native-label-line-height);
+}
+
+body.eilmo-cf-native-style form.checkout .required {
+	color: var(--eilmo-cf-native-primary);
+	font-weight: 700;
+}
+
+/* Do not let theme validation palettes leak into the enabled Eilmo theme. */
+body.eilmo-cf-native-style form.checkout .woocommerce-validated label,
+body.eilmo-cf-native-style form.checkout .woocommerce-invalid label {
+	color: var(--eilmo-cf-native-text);
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-validated input.input-text,
+body.eilmo-cf-native-style form.checkout .woocommerce-validated select,
+body.eilmo-cf-native-style form.checkout .woocommerce-validated textarea {
+	border-color: var(--eilmo-cf-native-border);
+	background: var(--eilmo-cf-native-field);
+}
+
+body.eilmo-cf-native-style form.checkout input.input-text,
+body.eilmo-cf-native-style form.checkout input[type="text"],
+body.eilmo-cf-native-style form.checkout input[type="email"],
+body.eilmo-cf-native-style form.checkout input[type="tel"],
+body.eilmo-cf-native-style form.checkout input[type="number"],
+body.eilmo-cf-native-style form.checkout select,
+body.eilmo-cf-native-style form.checkout textarea {
+	width: 100%;
+	min-width: 0;
+	margin: 0;
+	border: 1px solid var(--eilmo-cf-native-border);
+	border-radius: var(--eilmo-cf-native-control-radius);
+	background: var(--eilmo-cf-native-field);
+	color: var(--eilmo-cf-native-text);
+	box-shadow: none;
+	font: inherit;
+	font-size: var(--eilmo-cf-native-input-size);
+	font-weight: 400;
+	line-height: 1.5;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+body.eilmo-cf-native-style form.checkout input.input-text,
+body.eilmo-cf-native-style form.checkout input[type="text"],
+body.eilmo-cf-native-style form.checkout input[type="email"],
+body.eilmo-cf-native-style form.checkout input[type="tel"],
+body.eilmo-cf-native-style form.checkout input[type="number"],
+body.eilmo-cf-native-style form.checkout select {
+	min-height: var(--eilmo-cf-native-input-height);
+	height: var(--eilmo-cf-native-input-height);
+	padding: 15px 16px;
+}
+
+body.eilmo-cf-native-style form.checkout select {
+	padding-right: 40px;
+}
+
+body.eilmo-cf-native-style form.checkout textarea {
+	min-height: 100px;
+	padding: 13px 14px;
+	resize: vertical;
+}
+
+body.eilmo-cf-native-style form.checkout input::placeholder,
+body.eilmo-cf-native-style form.checkout textarea::placeholder {
+	color: color-mix(in srgb, var(--eilmo-cf-native-muted) 72%, var(--eilmo-cf-native-field));
+	opacity: 1;
+}
+
+body.eilmo-cf-native-style form.checkout input.input-text:hover,
+body.eilmo-cf-native-style form.checkout input[type="text"]:hover,
+body.eilmo-cf-native-style form.checkout input[type="email"]:hover,
+body.eilmo-cf-native-style form.checkout input[type="tel"]:hover,
+body.eilmo-cf-native-style form.checkout select:hover,
+body.eilmo-cf-native-style form.checkout textarea:hover {
+	border-color: var(--eilmo-cf-native-border-strong);
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-invalid input.input-text,
+body.eilmo-cf-native-style form.checkout .woocommerce-invalid select,
+body.eilmo-cf-native-style form.checkout .woocommerce-invalid textarea {
+	border-color: var(--eilmo-cf-native-primary);
+	background: var(--eilmo-cf-native-field);
+}
+
+body.eilmo-cf-native-style form.checkout input.input-text:focus,
+body.eilmo-cf-native-style form.checkout input[type="text"]:focus,
+body.eilmo-cf-native-style form.checkout input[type="email"]:focus,
+body.eilmo-cf-native-style form.checkout input[type="tel"]:focus,
+body.eilmo-cf-native-style form.checkout select:focus,
+body.eilmo-cf-native-style form.checkout textarea:focus {
+	border-color: var(--eilmo-cf-native-primary);
+	outline: 0;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--eilmo-cf-native-primary) 10%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+ * Delivery + Payment Option sections
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-slot,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls {
+	width: 100%;
+	margin: var(--eilmo-cf-native-stack-gap) 0 24px;
+	color: var(--eilmo-cf-native-text);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-options,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-methods {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-methods {
+	margin-top: var(--eilmo-cf-native-stack-gap);
+}
+
+/* Same compact Payment Method header rhythm used by Campaign Checkout. */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-methods-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin: 0 0 var(--eilmo-cf-native-label-gap);
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-methods-header .eilmo-cf-native-control-label {
+	margin-bottom: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-method-pay-note {
+	margin: 0;
+	padding: 0;
+	color: var(--eilmo-cf-native-muted);
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.4;
+	text-align: right;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-method-pay-note[hidden] {
+	display: none;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-grid,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--eilmo-cf-native-choice-gap);
+	align-items: stretch;
+	width: 100%;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--eilmo-cf-native-choice-gap);
+	width: 100%;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-card {
+	position: relative;
+	min-width: 0;
+	margin: 0;
+	border: 1px solid var(--eilmo-cf-native-border);
+	background: var(--eilmo-cf-native-card);
+	color: var(--eilmo-cf-native-text);
+	box-shadow: none;
+	cursor: pointer;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card {
+	display: flex;
+	align-items: flex-start;
+	gap: 0;
+	min-height: 126px;
+	padding: 16px 44px 15px 18px;
+	border-width: 1.5px;
+	border-radius: 14px;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-card {
+	display: flex;
+	align-items: center;
+	gap: 0;
+	min-height: 62px;
+	padding: 14px 18px;
+	border-width: 1.5px;
+	border-radius: 12px;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card:hover,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-card:hover {
+	border-color: var(--eilmo-cf-native-primary);
+	box-shadow: 0 4px 14px rgb(15 23 42 / 6%);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card.is-selected,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-card.is-selected {
+	border-color: var(--eilmo-cf-native-primary);
+	background: var(--eilmo-cf-native-primary-soft);
+	box-shadow: 0 0 0 1px var(--eilmo-cf-native-primary);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-copy,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-copy {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: 0;
+	min-width: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-copy strong {
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-copy strong,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-price {
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.35;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-copy small {
+	color: var(--eilmo-cf-native-muted);
+	margin-top: 5px;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.35;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-copy small {
+	color: var(--eilmo-cf-native-muted);
+	margin-top: 4px;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.35;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-copy em {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	align-self: flex-start;
+	min-height: 24px;
+	margin-top: 7px;
+	padding: 4px 10px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--eilmo-cf-native-primary);
+	color: var(--eilmo-cf-native-button-text);
+	font-size: 10px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.2;
+	white-space: nowrap;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-check {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 999px;
+	background: var(--eilmo-cf-native-primary);
+	color: var(--eilmo-cf-native-button-text);
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+body.eilmo-cf-native-style form.checkout .is-selected > .eilmo-cf-native-check {
+	display: inline-flex;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-price {
+	margin-left: auto;
+	padding-right: 28px;
+	white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+ * WooCommerce gateway cards — real radios/boxes, Eilmo visual language
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-host {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-host > ul.wc_payment_methods.eilmo-cf-native-gateway-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--eilmo-cf-native-choice-gap);
+	align-items: stretch;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	list-style: none;
+}
+
+/* One available non-COD gateway uses the full row without becoming taller. */
+body.eilmo-cf-native-style form.checkout
+	.eilmo-cf-native-gateway-host > ul.wc_payment_methods.eilmo-cf-native-gateway-grid[data-eilmo-native-gateway-count="1"] {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* COD is represented only by the top Payment Option card. Keep WooCommerce's
+ * real COD radio in the DOM for processing, but never expose a second COD card. */
+body.eilmo-cf-native-style form.checkout
+	.eilmo-cf-native-payment-controls[data-payment-type="advance"]
+	.eilmo-cf-native-gateway-grid > li.payment_method_cod,
+body.eilmo-cf-native-style form.checkout
+	.eilmo-cf-native-payment-controls[data-payment-type="full"]
+	.eilmo-cf-native-gateway-grid > li.payment_method_cod {
+	display: none;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method {
+	display: contents;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	list-style: none;
+}
+
+/* COD has one visual representation only: the Payment Option card above.
+ * Keep WooCommerce's real COD radio in the DOM for checkout processing, but
+ * never render a duplicate COD card in Payment Method — even with Live Fraud. */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method.payment_method_cod {
+	display: none;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid input.input-radio[name="payment_method"] {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+	opacity: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label.eilmo-cf-native-gateway-card {
+	order: 1;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 14px;
+	min-width: 0;
+	min-height: 78px;
+	width: 100%;
+	margin: 0;
+	padding: 13px 48px 13px 16px;
+	border: 1px solid var(--eilmo-cf-native-border);
+	border-radius: 12px;
+	background: var(--eilmo-cf-native-card);
+	color: var(--eilmo-cf-native-text);
+	box-shadow: none;
+	cursor: pointer;
+	text-align: left;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.35;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label:hover,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label.eilmo-cf-native-gateway-card:hover {
+	border-color: var(--eilmo-cf-native-primary);
+	box-shadow: 0 4px 14px rgb(15 23 42 / 6%);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid input.input-radio[name="payment_method"]:checked + label,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid input.input-radio[name="payment_method"]:checked + label.eilmo-cf-native-gateway-card {
+	border-color: var(--eilmo-cf-native-primary);
+	background: var(--eilmo-cf-native-primary-soft);
+	box-shadow: 0 0 0 1px var(--eilmo-cf-native-primary);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid input.input-radio[name="payment_method"]:checked + label::after,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid input.input-radio[name="payment_method"]:checked + label.eilmo-cf-native-gateway-card::after {
+	content: "✓";
+	position: absolute;
+	top: 9px;
+	right: 9px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 999px;
+	background: var(--eilmo-cf-native-primary);
+	color: var(--eilmo-cf-native-button-text);
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-title {
+	display: block;
+	order: 1;
+	min-width: 0;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+/* Keep the chooser compact; gateway-owned detail/instructions remain below. */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-description {
+	display: none;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label img,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-card img {
+	order: 2;
+	display: block;
+	flex: 0 1 auto;
+	width: auto;
+	max-width: 110px;
+	height: auto;
+	max-height: 36px;
+	margin: 0 0 0 auto;
+	padding: 0;
+	object-fit: contain;
+	border: 0;
+	box-shadow: none;
+}
+
+/* Real gateway-owned fields remain one full-width panel below all cards. */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > .payment_box,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > .payment_box.eilmo-cf-native-gateway-fields {
+	order: 100;
+	grid-column: 1 / -1;
+	position: relative;
+	min-width: 0;
+	width: 100%;
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px solid var(--eilmo-cf-native-border);
+	border-radius: 10px;
+	background: var(--eilmo-cf-native-soft);
+	color: var(--eilmo-cf-native-text);
+	box-shadow: 0 1px 2px rgb(15 23 42 / 2%), 0 6px 18px rgb(15 23 42 / 3%);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > .payment_box::before,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-fields::before {
+	content: none;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-fields fieldset,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-fields .form-row,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-fields .wc-payment-form {
+	max-width: 100%;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-fields p:first-child {
+	margin-top: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-fields p:last-child {
+	margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+ * Eilmo bKash / Nagad dynamic details — one shared structure for both
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	width: 100%;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__account {
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: 7px;
+	margin: 0;
+	padding: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__account-label {
+	color: var(--eilmo-cf-native-muted);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__account-value {
+	color: var(--eilmo-cf-native-text);
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__instructions,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__instructions p {
+	margin: 0;
+	color: var(--eilmo-cf-native-muted);
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.55;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__transaction {
+	margin: 0;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: center;
+	gap: 8px 12px;
+	width: 100%;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof-label {
+	margin: 0;
+	color: var(--eilmo-cf-native-text);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof-file {
+	min-width: 0;
+	width: 100%;
+	color: var(--eilmo-cf-native-muted);
+	font: inherit;
+	font-size: 13px;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof-file::file-selector-button {
+	margin-right: 10px;
+	padding: 9px 12px;
+	border: 1px solid var(--eilmo-cf-native-border);
+	border-radius: 8px;
+	background: var(--eilmo-cf-native-soft);
+	color: var(--eilmo-cf-native-text);
+	font: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof-help {
+	grid-column: 1 / -1;
+	display: block;
+	margin: 0;
+	color: var(--eilmo-cf-native-muted);
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+
+/* Campaign stack rhythm: WooCommerce Additional Information starts only after
+ * the Eilmo payment area has finished, never touching the payment details box. */
+body.eilmo-cf-native-style form.checkout .woocommerce-additional-fields {
+	margin-top: 6px;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-additional-fields > h3 {
+	margin-top: 0;
+	margin-bottom: 18px;
+}
+
+/* --------------------------------------------------------------------------
+ * Native WooCommerce order summary — campaign rhythm, native table lifecycle
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout.woocommerce-checkout #order_review_heading,
+body.eilmo-cf-native-style form.checkout #order_review_heading {
+	margin: 0;
+	padding: 26px 24px 14px;
+	border-width: 1px 1px 0;
+	border-style: solid;
+	border-color: var(--eilmo-cf-native-border);
+	border-radius: 22px 22px 0 0;
+	background: var(--eilmo-cf-native-card);
+	box-shadow: var(--eilmo-cf-native-card-shadow);
+}
+
+body.eilmo-cf-native-style form.checkout.woocommerce-checkout #order_review.woocommerce-checkout-review-order,
+body.eilmo-cf-native-style form.checkout #order_review.woocommerce-checkout-review-order,
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order {
+	margin: 0;
+	padding: 0 24px 24px;
+	border-width: 0 1px 1px;
+	border-style: solid;
+	border-color: var(--eilmo-cf-native-border);
+	border-radius: 0 0 22px 22px;
+	background: var(--eilmo-cf-native-card);
+	box-shadow: var(--eilmo-cf-native-summary-shadow);
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table {
+	width: 100%;
+	margin: 0;
+	border: 0;
+	border-collapse: collapse;
+	background: transparent;
+	box-shadow: none;
+	font-size: 14px;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table th,
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table td {
+	padding: 9px 0;
+	border-width: 0 0 1px;
+	border-style: solid;
+	border-color: var(--eilmo-cf-native-border);
+	background: transparent;
+	color: var(--eilmo-cf-native-text);
+	font-size: 14px;
+	line-height: 1.45;
+	vertical-align: middle;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table th {
+	color: var(--eilmo-cf-native-muted);
+	font-weight: 500;
+	text-align: left;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table td {
+	font-weight: 600;
+	text-align: right;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table thead th {
+	color: var(--eilmo-cf-native-text);
+	font-size: 13px;
+	font-weight: 700;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table .product-name {
+	text-align: left;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table .product-total {
+	text-align: right;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-summary-row--pay-now th,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-summary-row--pay-now td {
+	padding-top: 12px;
+	color: var(--eilmo-cf-native-text);
+	font-weight: 700;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-summary-row--pay-now td {
+	color: var(--eilmo-cf-native-primary);
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table .order-total th,
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table .order-total td {
+	padding-top: 13px;
+	padding-bottom: 12px;
+	border-bottom: 0;
+	color: var(--eilmo-cf-native-text);
+	font-size: 16px;
+	font-weight: 700;
+}
+
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table .order-total td,
+body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order-table .order-total .amount {
+	color: var(--eilmo-cf-native-primary);
+	font-size: 19px;
+	font-weight: 800;
+}
+
+/* Native payment engine remains in #payment; Eilmo only styles privacy/button. */
+body.eilmo-cf-native-style form.checkout #payment {
+	margin: 20px 0 0;
+	padding: 0 0 8px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+/* Campaign parity: the native checkout privacy paragraph is intentionally hidden.
+ * Terms/consent controls remain available when WooCommerce requires them. */
+body.eilmo-cf-native-style form.checkout #payment .woocommerce-privacy-policy-text {
+	display: none;
+}
+
+body.eilmo-cf-native-style form.checkout #payment .woocommerce-terms-and-conditions-wrapper {
+	margin: 0 0 16px;
+	color: var(--eilmo-cf-native-muted);
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.55;
+}
+
+body.eilmo-cf-native-style form.checkout #payment .place-order {
+	width: 100%;
+	margin: 0;
+	padding: 0 0 8px;
+	clear: both;
+	box-sizing: border-box;
+}
+
+body.eilmo-cf-native-style form.checkout #place_order,
+body.eilmo-cf-native-style form.checkout button#place_order {
+	width: 100%;
+	min-height: 54px;
+	margin: 0;
+	padding: 15px 18px;
+	border: 1px solid var(--eilmo-cf-native-primary);
+	border-radius: var(--eilmo-cf-native-radius);
+	background: var(--eilmo-cf-native-primary);
+	color: var(--eilmo-cf-native-button-text);
+	box-shadow: none;
+	font: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.25;
+	text-align: center;
+	cursor: pointer;
+	transition: background-color 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+}
+
+body.eilmo-cf-native-style form.checkout #place_order:hover,
+body.eilmo-cf-native-style form.checkout button#place_order:hover {
+	border-color: var(--eilmo-cf-native-primary-hover);
+	background: var(--eilmo-cf-native-primary-hover);
+}
+
+body.eilmo-cf-native-style form.checkout #place_order:disabled,
+body.eilmo-cf-native-style form.checkout button#place_order:disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+
+body.eilmo-cf-native-style form.checkout #order_review a,
+body.eilmo-cf-native-style form.checkout #payment a,
+body.eilmo-cf-native-style form.checkout .woocommerce-form-coupon-toggle a {
+	color: var(--eilmo-cf-native-primary);
+}
+
+/* --------------------------------------------------------------------------
+ * Responsive parity with campaign checkout
+ * -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 767px) {
+	body.eilmo-cf-native-style form.checkout #customer_details {
+		padding: 21px 16px;
+	}
+
+	body.eilmo-cf-native-style form.checkout #order_review_heading {
+		padding: 16px 16px 12px;
+	}
+
+	body.eilmo-cf-native-style form.checkout #order_review.woocommerce-checkout-review-order,
+	body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order {
+		padding: 0 16px 16px;
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-slot,
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls {
+		margin-top: var(--eilmo-cf-native-stack-gap);
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-grid,
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-grid,
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-host > ul.wc_payment_methods.eilmo-cf-native-gateway-grid {
+		grid-template-columns: 1fr;
+		gap: var(--eilmo-cf-native-choice-gap);
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card {
+		min-height: 112px;
+		padding: 15px 42px 14px 16px;
+		border-radius: 14px;
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-card {
+		min-height: 58px;
+		padding: 12px 14px;
+		border-radius: 12px;
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label,
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > label.eilmo-cf-native-gateway-card {
+		min-height: 74px;
+		padding: 12px 46px 12px 14px;
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > .payment_box,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-grid > li.wc_payment_method > .payment_box.eilmo-cf-native-gateway-fields {
+		padding: 13px;
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof {
+		grid-template-columns: 1fr;
+	}
+
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-wc-manual-payment__proof-help {
+		grid-column: auto;
+	}
+
+	body.eilmo-cf-native-style form.checkout .woocommerce-checkout-review-order {
+		padding: 16px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card,
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-delivery-card,
+	body.eilmo-cf-native-style form.checkout .eilmo-cf-native-gateway-card,
+	body.eilmo-cf-native-style form.checkout #place_order {
+		transition: none;
+	}
+}
+
+/* --------------------------------------------------------------------------
+ * Native checkout recalculation / Live Fraud interaction lock
+ * --------------------------------------------------------------------------
+ * Keep the real form controls enabled so WooCommerce can serialize them, but
+ * temporarily prevent a second visual selection while an update is in flight.
+ * This avoids stale requests racing newer Payment Option / gateway choices.
+ */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls.is-updating .eilmo-cf-native-option-card,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls.is-updating .eilmo-cf-native-gateway-card {
+	pointer-events: none;
+	cursor: wait;
+	opacity: 0.68;
+}
+
+
+/* --------------------------------------------------------------------------
+ * Native Live Fraud status — isolated from Campaign Checkout
+ * -------------------------------------------------------------------------- */
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-fraud-status {
+	margin: 7px 0 0;
+	padding: 0;
+	color: var(--eilmo-cf-native-muted);
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.45;
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-fraud-status--success {
+	color: var(--eilmo-cf-native-primary);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-fraud-status--error {
+	color: var(--eilmo-cf-native-text);
+}
+
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls.is-fraud-pending .eilmo-cf-native-option-card,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls.is-fraud-pending .eilmo-cf-native-gateway-card,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-payment-controls.is-fraud-pending .eilmo-cf-native-gateway-grid > li.wc_payment_method > label,
+body.eilmo-cf-native-style form.checkout .eilmo-cf-native-option-card.is-fraud-disabled {
+	opacity: 0.56;
+	cursor: not-allowed;
+}

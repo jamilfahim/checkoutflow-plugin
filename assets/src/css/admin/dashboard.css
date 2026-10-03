@@ -1,0 +1,296 @@
+.eilmo-cf-dashboard {
+	width: calc(100% - 20px);
+	max-width: none;
+	margin-right: 20px;
+}
+
+.eilmo-cf-dashboard__header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 20px;
+	margin: 18px 0 22px;
+}
+
+.eilmo-cf-dashboard__header h1 {
+	margin: 0 0 6px;
+	font-size: 28px;
+	line-height: 1.2;
+}
+
+.eilmo-cf-dashboard__header p,
+.eilmo-cf-dashboard__card p,
+.eilmo-cf-dashboard__section-heading p,
+.eilmo-cf-dashboard__actions p {
+	margin: 0;
+	color: #64748b;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.eilmo-cf-dashboard__date {
+	padding: 8px 12px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	background: #fff;
+	color: #64748b;
+	white-space: nowrap;
+}
+
+.eilmo-cf-dashboard__periods {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 7px;
+	margin: 0 0 14px;
+}
+
+.eilmo-cf-dashboard__period-label {
+	margin-right: 4px;
+	color: #475569;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.eilmo-cf-dashboard__period {
+	padding: 7px 11px;
+	border: 1px solid #d8dee7;
+	border-radius: 7px;
+	background: #fff;
+	color: #334155;
+	font-size: 13px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.eilmo-cf-dashboard__period:hover,
+.eilmo-cf-dashboard__period:focus {
+	border-color: #6d28d9;
+	color: #5b21b6;
+}
+
+.eilmo-cf-dashboard__period.is-active {
+	border-color: #6d28d9;
+	background: #6d28d9;
+	color: #fff;
+}
+
+.eilmo-cf-dashboard__range {
+	margin-left: auto;
+	color: #64748b;
+	font-size: 12px;
+}
+
+.eilmo-cf-dashboard__grid {
+	display: grid;
+	gap: 14px;
+}
+
+.eilmo-cf-dashboard__grid--metrics {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.eilmo-cf-dashboard__card,
+.eilmo-cf-dashboard__health,
+.eilmo-cf-dashboard__actions {
+	box-sizing: border-box;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.eilmo-cf-dashboard__card {
+	min-height: 148px;
+	padding: 18px;
+}
+
+.eilmo-cf-dashboard__card--attention.has-attention {
+	border-color: #f3c7c7;
+	background: #fffafa;
+}
+
+.eilmo-cf-dashboard__label {
+	margin-bottom: 11px;
+	color: #64748b;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.eilmo-cf-dashboard__value {
+	margin-bottom: 9px;
+	color: #111827;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 1.05;
+}
+
+.eilmo-cf-dashboard__value.is-muted {
+	color: #98a2b3;
+}
+
+.eilmo-cf-dashboard__value--price .woocommerce-Price-amount {
+	font: inherit;
+}
+
+.eilmo-cf-dashboard__value--price {
+	font-size: clamp(22px, 2vw, 32px);
+	overflow-wrap: anywhere;
+}
+
+.eilmo-cf-dashboard__month-context {
+	margin-top: 12px;
+	padding-top: 10px;
+	border-top: 1px solid #e5e7eb;
+	color: #475569;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.eilmo-cf-dashboard__attention-breakdown {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: 10px;
+}
+
+.eilmo-cf-dashboard__attention-breakdown span {
+	padding: 4px 7px;
+	border-radius: 999px;
+	background: #f8fafc;
+	color: #64748b;
+	font-size: 11px;
+	line-height: 1.2;
+}
+
+.eilmo-cf-dashboard__health,
+.eilmo-cf-dashboard__actions {
+	margin-top: 14px;
+	padding: 18px;
+}
+
+.eilmo-cf-dashboard__section-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 14px;
+}
+
+.eilmo-cf-dashboard__section-heading h2,
+.eilmo-cf-dashboard__actions h2 {
+	margin: 0 0 5px;
+	font-size: 17px;
+	line-height: 1.3;
+}
+
+.eilmo-cf-dashboard__section-heading > a {
+	margin-top: 2px;
+	text-decoration: none;
+}
+
+.eilmo-cf-dashboard__health-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.eilmo-cf-dashboard__health-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	min-height: 44px;
+	padding: 10px 12px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	background: #f8fafc;
+	color: #111827;
+	text-decoration: none;
+}
+
+.eilmo-cf-dashboard__health-item:hover,
+.eilmo-cf-dashboard__health-item:focus {
+	border-color: #cbd5e1;
+	background: #fff;
+	color: #111827;
+}
+
+.eilmo-cf-dashboard__health-name {
+	font-weight: 600;
+}
+
+.eilmo-cf-dashboard__health-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: #64748b;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.eilmo-cf-dashboard__health-status::before {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #94a3b8;
+	content: "";
+}
+
+.eilmo-cf-dashboard__health-status.is-active {
+	color: #166534;
+}
+
+.eilmo-cf-dashboard__health-status.is-active::before {
+	background: #22c55e;
+}
+
+.eilmo-cf-dashboard__actions-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 14px;
+}
+
+.eilmo-cf-dashboard .button-primary {
+	border-color: #6d28d9;
+	background: #6d28d9;
+	box-shadow: none;
+}
+
+.eilmo-cf-dashboard .button-primary:hover,
+.eilmo-cf-dashboard .button-primary:focus {
+	border-color: #5b21b6;
+	background: #5b21b6;
+}
+
+@media (max-width: 1200px) {
+	.eilmo-cf-dashboard__grid--metrics,
+	.eilmo-cf-dashboard__health-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 782px) {
+	.eilmo-cf-dashboard__header,
+	.eilmo-cf-dashboard__section-heading {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.eilmo-cf-dashboard__grid--metrics,
+	.eilmo-cf-dashboard__health-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.eilmo-cf-dashboard__card {
+		min-height: 0;
+	}
+
+	.eilmo-cf-dashboard__range {
+		width: 100%;
+		margin-left: 0;
+	}
+}

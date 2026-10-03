@@ -1,0 +1,1102 @@
+/* The page checkout must not float over the active cart checkout. */
+[data-eilmo-modal-background] .eilmo-cf-summary-bar,
+[data-eilmo-modal-background] .eilmo-cf-summary-shell,
+[data-eilmo-modal-background] .eilmo-cf-checkout__order-submit {
+	visibility: hidden ;
+}
+
+/**
+ * Eilmo Cart Checkout.
+ *
+ * Cart Drawer owns product / quantity management.
+ * Cart Checkout owns review + checkout completion.
+ */
+
+
+/* ---------------------------------------------------------
+ * Root
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout[hidden] {
+	display: none;
+}
+
+
+body.eilmo-cf-cart-checkout-open {
+	overflow: hidden;
+}
+
+
+.eilmo-cf-cart-checkout {
+	position: fixed;
+
+	inset: 0;
+
+	z-index: 100200;
+
+	display: flex;
+
+	align-items: flex-end;
+	justify-content: center;
+
+	padding: 0;
+
+	font-family: inherit;
+
+	pointer-events: none;
+}
+
+
+.eilmo-cf-cart-checkout.is-open,
+.eilmo-cf-cart-checkout.is-closing {
+	pointer-events: auto;
+}
+
+
+/* ---------------------------------------------------------
+ * Backdrop
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__backdrop,
+.eilmo-cf-cart-checkout__backdrop:hover,
+.eilmo-cf-cart-checkout__backdrop:focus,
+.eilmo-cf-cart-checkout__backdrop:focus-visible,
+.eilmo-cf-cart-checkout__backdrop:active {
+	position: absolute;
+
+	inset: 0;
+
+	width: 100%;
+	height: 100%;
+
+	margin: 0;
+	padding: 0;
+
+	border: 0;
+	border-radius: 0;
+
+	background:
+		rgba(
+			0,
+			0,
+			0,
+			0.52
+		);
+
+	background-image: none;
+
+	color: transparent;
+
+	box-shadow: none;
+
+	outline: 0;
+
+	opacity: 0;
+
+	appearance: none;
+
+	cursor: default;
+
+	filter: none;
+
+	transform: none;
+
+	transition:
+		opacity 220ms ease;
+}
+
+
+.eilmo-cf-cart-checkout.is-open
+	.eilmo-cf-cart-checkout__backdrop {
+	opacity: 1;
+}
+
+
+/* ---------------------------------------------------------
+ * Panel
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__panel {
+	position: relative;
+
+	z-index: 1;
+
+	display: flex;
+
+	flex-direction: column;
+
+	width:
+		min(
+			1180px,
+			calc(
+				100vw - 48px
+			)
+		);
+
+	/*
+	 * Keep a stable drawer height from the very first frame.
+	 *
+	 * Previously only max-height was defined, so the drawer
+	 * was short while loading and expanded after checkout
+	 * content arrived.
+	 */
+	height:
+		min(
+			92dvh,
+			920px
+		);
+
+	max-height: 92dvh;
+
+	min-width: 0;
+	min-height: 0;
+
+	background: #ffffff;
+
+	color: #111827;
+
+	border-radius:
+		20px 20px 0 0;
+
+	box-shadow:
+		0 -12px 50px
+		rgba(
+			0,
+			0,
+			0,
+			0.18
+		);
+
+	overflow: hidden;
+
+	will-change: transform;
+}
+
+
+.eilmo-cf-cart-checkout.is-open
+	.eilmo-cf-cart-checkout__panel {
+	animation:
+		eilmo-cf-cart-checkout-sheet-in
+		240ms
+		cubic-bezier(
+			0.22,
+			1,
+			0.36,
+			1
+		)
+		both;
+}
+
+
+.eilmo-cf-cart-checkout.is-closing
+	.eilmo-cf-cart-checkout__panel {
+	animation:
+		eilmo-cf-cart-checkout-sheet-out
+		190ms
+		ease-in
+		both;
+}
+
+
+@keyframes eilmo-cf-cart-checkout-sheet-in {
+
+	from {
+		transform:
+			translate3d(
+				0,
+				100%,
+				0
+			);
+	}
+
+	to {
+		transform:
+			translate3d(
+				0,
+				0,
+				0
+			);
+	}
+}
+
+
+@keyframes eilmo-cf-cart-checkout-sheet-out {
+
+	from {
+		transform:
+			translate3d(
+				0,
+				0,
+				0
+			);
+	}
+
+	to {
+		transform:
+			translate3d(
+				0,
+				100%,
+				0
+			);
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Header
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__header {
+	flex: 0 0 auto;
+
+	display: flex;
+
+	align-items: flex-start;
+	justify-content: space-between;
+
+	gap: 24px;
+
+	padding:
+		22px 28px 20px;
+
+	border-bottom:
+		1px solid #e5e7eb;
+
+	background: #ffffff;
+}
+
+
+.eilmo-cf-cart-checkout__heading {
+	min-width: 0;
+}
+
+
+.eilmo-cf-cart-checkout__title {
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 24px;
+	font-weight: 750;
+	line-height: 1.25;
+}
+
+
+.eilmo-cf-cart-checkout__description {
+	margin:
+		6px 0 0;
+
+	color: #6b7280;
+
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+
+/* ---------------------------------------------------------
+ * Close Button
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__close,
+.eilmo-cf-cart-checkout__close:hover,
+.eilmo-cf-cart-checkout__close:focus,
+.eilmo-cf-cart-checkout__close:active {
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	flex: 0 0 42px;
+
+	width: 42px;
+	height: 42px;
+
+	margin: 0;
+	padding: 0;
+
+	border:
+		1px solid #dfe3e8;
+
+	border-radius: 50%;
+
+	background: #f9fafb;
+
+	background-image: none;
+
+	color: #111827;
+
+	box-shadow: none;
+
+	appearance: none;
+
+	cursor: pointer;
+
+	transition:
+		background-color 180ms ease,
+		border-color 180ms ease,
+		color 180ms ease,
+		transform 180ms ease;
+}
+
+
+.eilmo-cf-cart-checkout__close svg {
+	display: block;
+
+	width: 18px;
+	height: 18px;
+
+	color: currentColor;
+
+	transition:
+		transform 240ms ease;
+}
+
+
+.eilmo-cf-cart-checkout__close:hover,
+.eilmo-cf-cart-checkout__close:focus-visible {
+	border-color: #111827;
+
+	background: #111827;
+
+	color: #ffffff;
+
+	transform:
+		scale(1.04);
+}
+
+
+.eilmo-cf-cart-checkout__close:hover svg,
+.eilmo-cf-cart-checkout__close:focus-visible svg {
+	transform:
+		rotate(180deg);
+}
+
+
+.eilmo-cf-cart-checkout__close:focus-visible {
+	outline:
+		3px solid
+		rgba(
+			17,
+			24,
+			39,
+			0.16
+		);
+
+	outline-offset: 3px;
+}
+
+
+.eilmo-cf-cart-checkout__close:active {
+	transform:
+		scale(0.96);
+}
+
+
+/* ---------------------------------------------------------
+ * Body
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__body {
+	position: relative;
+
+	flex: 1 1 auto;
+
+	min-width: 0;
+	min-height: 0;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	padding:
+		24px 28px 120px;
+
+	overscroll-behavior: contain;
+
+	-webkit-overflow-scrolling: touch;
+}
+
+
+/*
+ * While preparing checkout, make the body a full-height
+ * loading area instead of allowing the loader content to
+ * determine drawer height.
+ */
+.eilmo-cf-cart-checkout.is-loading
+	.eilmo-cf-cart-checkout__body {
+	display: flex;
+
+	flex-direction: column;
+}
+
+
+/* ---------------------------------------------------------
+ * Message
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__message {
+	flex: 0 0 auto;
+
+	margin:
+		0 0 18px;
+
+	padding:
+		11px 13px;
+
+	border:
+		1px solid #fecaca;
+
+	border-radius: 9px;
+
+	background: #fef2f2;
+
+	color: #b42318;
+
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+
+.eilmo-cf-cart-checkout__message[hidden] {
+	display: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Loading
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__loading {
+	display: flex;
+
+	align-items: center;
+	justify-content: center;
+
+	flex: 1 1 auto;
+
+	width: 100%;
+
+	min-width: 0;
+	min-height: 0;
+
+	gap: 10px;
+
+	padding:
+		32px 16px;
+
+	color: #6b7280;
+
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.45;
+
+	text-align: center;
+
+	box-sizing: border-box;
+}
+
+
+.eilmo-cf-cart-checkout__loading[hidden] {
+	display: none;
+}
+
+
+.eilmo-cf-cart-checkout__spinner {
+	flex: 0 0 auto;
+
+	width: 20px;
+	height: 20px;
+
+	border:
+		2px solid #e5e7eb;
+
+	border-top-color: #111827;
+
+	border-radius: 50%;
+
+	animation:
+		eilmo-cf-cart-checkout-spin
+		700ms
+		linear
+		infinite;
+}
+
+
+@keyframes eilmo-cf-cart-checkout-spin {
+
+	to {
+		transform:
+			rotate(
+				360deg
+			);
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Content
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout__content {
+	width: 100%;
+
+	min-width: 0;
+}
+
+
+.eilmo-cf-cart-checkout__content:empty {
+	display: none;
+}
+
+
+/* ---------------------------------------------------------
+ * Existing Checkout Flow inside Cart Checkout
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-checkout
+	.eilmo-cf-checkout {
+	width: 100%;
+
+	max-width: none;
+
+	margin: 0;
+}
+
+
+/*
+ * Cart Checkout does not use the normal product /
+ * variation catalogue.
+ */
+.eilmo-cf-cart-checkout
+	.eilmo-cf-checkout__main
+	>
+	.eilmo-cf-checkout__products {
+	display: none;
+}
+
+
+/*
+ * Cart Checkout never exposes WhatsApp ordering.
+ */
+.eilmo-cf-cart-checkout
+	.eilmo-cf-whatsapp-order,
+.eilmo-cf-cart-checkout
+	.eilmo-cf-whatsapp-order__button,
+.eilmo-cf-cart-checkout
+	[data-eilmo-whatsapp-order],
+.eilmo-cf-cart-checkout
+	[data-eilmo-whatsapp-order-button],
+.eilmo-cf-cart-checkout
+	[data-eilmo-quick-whatsapp] {
+	display: none;
+}
+
+
+.eilmo-cf-cart-checkout
+	.eilmo-cf-checkout__summary {
+	--eilmo-cf-summary-sticky-offset: 16px;
+}
+
+
+/* ---------------------------------------------------------
+ * Compact Cart Selection
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-selection {
+	margin:
+		0 0 28px;
+}
+
+
+.eilmo-cf-cart-selection__header {
+	display: flex;
+
+	align-items: center;
+	justify-content: space-between;
+
+	gap: 16px;
+
+	margin:
+		0 0 12px;
+}
+
+
+.eilmo-cf-cart-selection__heading {
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+
+/* ---------------------------------------------------------
+ * Change Button
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-selection__change,
+.eilmo-cf-cart-selection__change:hover,
+.eilmo-cf-cart-selection__change:focus,
+.eilmo-cf-cart-selection__change:active {
+	margin: 0;
+	padding: 0;
+
+	border: 0;
+
+	border-radius: 0;
+
+	background: transparent;
+
+	background-image: none;
+
+	color: #d6336c;
+
+	box-shadow: none;
+
+	appearance: none;
+
+	font: inherit;
+
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+
+	text-decoration: underline;
+
+	text-underline-offset: 2px;
+
+	cursor: pointer;
+}
+
+
+.eilmo-cf-cart-selection__change:hover,
+.eilmo-cf-cart-selection__change:focus-visible {
+	color: #a61e4d;
+}
+
+
+.eilmo-cf-cart-selection__change:focus-visible {
+	outline:
+		2px solid currentColor;
+
+	outline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+ * Selection List
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-selection__list {
+	overflow: hidden;
+
+	border:
+		1px solid #e1e5ea;
+
+	border-radius: 14px;
+
+	background: #ffffff;
+}
+
+
+.eilmo-cf-cart-selection__item {
+	display: grid;
+
+	grid-template-columns:
+		72px
+		minmax(
+			0,
+			1fr
+		)
+		auto;
+
+	align-items: center;
+
+	gap: 16px;
+
+	padding: 16px;
+}
+
+
+.eilmo-cf-cart-selection__item +
+.eilmo-cf-cart-selection__item {
+	border-top:
+		1px solid #edf0f3;
+}
+
+
+/* ---------------------------------------------------------
+ * Selection Image
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-selection__image {
+	width: 72px;
+	height: 72px;
+
+	overflow: hidden;
+
+	border-radius: 10px;
+
+	background: #f6f7f8;
+}
+
+
+.eilmo-cf-cart-selection__image img {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	margin: 0;
+
+	object-fit: cover;
+}
+
+
+/* ---------------------------------------------------------
+ * Selection Content
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-selection__content {
+	display: flex;
+
+	flex-direction: column;
+
+	min-width: 0;
+
+	gap: 3px;
+}
+
+
+.eilmo-cf-cart-selection__title {
+	margin: 0;
+
+	color: #111827;
+
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.4;
+
+	overflow-wrap: anywhere;
+}
+
+
+.eilmo-cf-cart-selection__variation {
+	color: #4b5563;
+
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.45;
+}
+
+
+.eilmo-cf-cart-selection__quantity {
+	color: #6b7280;
+
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.45;
+}
+
+
+/* ---------------------------------------------------------
+ * Selection Price
+ * --------------------------------------------------------- */
+
+.eilmo-cf-cart-selection__price {
+	display: flex;
+
+	align-items: center;
+	justify-content: flex-end;
+
+	flex-wrap: wrap;
+
+	gap: 7px;
+
+	min-width: 90px;
+
+	margin: 0;
+	padding: 0;
+
+	background: transparent;
+
+	color: #111827;
+
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.4;
+
+	text-align: right;
+}
+
+
+.eilmo-cf-cart-selection__price
+	.price,
+.eilmo-cf-cart-selection__price
+	.woocommerce-Price-amount,
+.eilmo-cf-cart-selection__price
+	.woocommerce-Price-amount
+	bdi,
+.eilmo-cf-cart-selection__price
+	.woocommerce-Price-currencySymbol {
+	margin: 0;
+	padding: 0;
+
+	background: transparent;
+
+	color: inherit;
+
+	font: inherit;
+	line-height: inherit;
+
+	text-decoration: none;
+}
+
+
+.eilmo-cf-cart-selection__price
+	ins {
+	margin: 0;
+	padding: 0;
+
+	background: transparent;
+
+	color: #111827;
+
+	font: inherit;
+	line-height: inherit;
+
+	text-decoration: none;
+}
+
+
+.eilmo-cf-cart-selection__price
+	del {
+	margin: 0;
+	padding: 0;
+
+	background: transparent;
+
+	color: #9ca3af;
+
+	font-size: 13px;
+	font-weight: 500;
+	line-height: inherit;
+
+	opacity: 1;
+
+	text-decoration: line-through;
+}
+
+
+.eilmo-cf-cart-selection__price
+	del
+	.woocommerce-Price-amount,
+.eilmo-cf-cart-selection__price
+	del
+	.woocommerce-Price-amount
+	bdi,
+.eilmo-cf-cart-selection__price
+	del
+	.woocommerce-Price-currencySymbol {
+	color: inherit;
+
+	font: inherit;
+	line-height: inherit;
+}
+
+
+.eilmo-cf-cart-selection__price
+	ins
+	.woocommerce-Price-amount,
+.eilmo-cf-cart-selection__price
+	ins
+	.woocommerce-Price-amount
+	bdi,
+.eilmo-cf-cart-selection__price
+	ins
+	.woocommerce-Price-currencySymbol {
+	color: inherit;
+
+	font: inherit;
+	line-height: inherit;
+}
+
+
+/* ---------------------------------------------------------
+ * Tablet
+ * --------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+
+	.eilmo-cf-cart-checkout__panel {
+		width:
+			calc(
+				100vw - 24px
+			);
+
+		height: 94dvh;
+		max-height: 94dvh;
+	}
+
+
+	.eilmo-cf-cart-checkout__header {
+		padding:
+			20px 22px 18px;
+	}
+
+
+	.eilmo-cf-cart-checkout__body {
+		padding:
+			22px 22px 110px;
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Mobile
+ * --------------------------------------------------------- */
+
+@media (max-width: 767px) {
+
+	.eilmo-cf-cart-checkout {
+		padding: 0;
+	}
+
+
+	.eilmo-cf-cart-checkout__panel {
+		width: 100%;
+
+		height: 96dvh;
+		max-height: 96dvh;
+
+		border-radius:
+			18px 18px 0 0;
+	}
+
+
+	.eilmo-cf-cart-checkout__header {
+		gap: 16px;
+
+		padding:
+			16px 16px 14px;
+	}
+
+
+	.eilmo-cf-cart-checkout__title {
+		font-size: 19px;
+	}
+
+
+	.eilmo-cf-cart-checkout__description {
+		margin-top: 4px;
+
+		font-size: 13px;
+	}
+
+
+	.eilmo-cf-cart-checkout__close,
+	.eilmo-cf-cart-checkout__close:hover,
+	.eilmo-cf-cart-checkout__close:focus,
+	.eilmo-cf-cart-checkout__close:active {
+		flex-basis: 36px;
+
+		width: 36px;
+		height: 36px;
+	}
+
+
+	.eilmo-cf-cart-checkout__body {
+		padding:
+			16px 16px 110px;
+	}
+
+
+	.eilmo-cf-cart-checkout__loading {
+		padding:
+			24px 12px;
+	}
+
+
+	.eilmo-cf-cart-selection {
+		margin-bottom: 22px;
+	}
+
+
+	.eilmo-cf-cart-selection__heading {
+		font-size: 16px;
+	}
+
+
+	.eilmo-cf-cart-selection__item {
+		grid-template-columns:
+			58px
+			minmax(
+				0,
+				1fr
+			);
+
+		align-items: center;
+
+		gap: 11px;
+
+		padding: 11px;
+	}
+
+
+	.eilmo-cf-cart-selection__image {
+		width: 58px;
+		height: 58px;
+	}
+
+
+	.eilmo-cf-cart-selection__title {
+		font-size: 14px;
+	}
+
+
+	.eilmo-cf-cart-selection__price {
+		grid-column: 2;
+
+		justify-content: flex-start;
+
+		min-width: 0;
+
+		font-size: 14px;
+
+		text-align: left;
+	}
+
+
+	.eilmo-cf-cart-checkout
+		.eilmo-cf-checkout__summary {
+		--eilmo-cf-summary-sticky-offset: 0px;
+	}
+}
+
+
+/* ---------------------------------------------------------
+ * Reduced Motion
+ * --------------------------------------------------------- */
+
+@media (
+	prefers-reduced-motion:
+	reduce
+) {
+
+	.eilmo-cf-cart-checkout__backdrop,
+	.eilmo-cf-cart-checkout__close,
+	.eilmo-cf-cart-checkout__close svg {
+		transition-duration: 1ms;
+	}
+
+
+	.eilmo-cf-cart-checkout.is-open
+		.eilmo-cf-cart-checkout__panel,
+	.eilmo-cf-cart-checkout.is-closing
+		.eilmo-cf-cart-checkout__panel,
+	.eilmo-cf-cart-checkout__spinner {
+		animation-duration: 1ms;
+	}
+}

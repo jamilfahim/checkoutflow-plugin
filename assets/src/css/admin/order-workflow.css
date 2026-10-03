@@ -1,0 +1,190 @@
+/* Quick Order Management: keep every enabled detail in the Orders list. */
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table {
+	display: block !important;
+	width: 100% !important;
+	min-width: 0 !important;
+	max-width: 100% !important;
+	margin: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table thead,
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tfoot {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 12px 14px;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 16px 18px;
+	border: 1px solid #d9e0e8;
+	border-radius: 12px;
+	background: #fff !important;
+	box-shadow: 0 1px 3px rgba(16, 24, 40, .04);
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row.eilmo-cf-workflow-has-secondary::before {
+	content: '';
+	order: 7;
+	flex: 0 0 100%;
+	height: 0;
+	border-top: 1px solid #edf0f4;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > th,
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > td {
+	display: block !important;
+	order: 17;
+	flex: 1 1 120px;
+	box-sizing: border-box;
+	width: auto !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	height: auto;
+	margin: 0;
+	padding: 0 !important;
+	border: 0;
+	background: transparent !important;
+	font-size: 13px;
+	line-height: 1.45;
+	vertical-align: top;
+	overflow: visible;
+	white-space: normal;
+	word-break: normal;
+	overflow-wrap: anywhere;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .hidden {
+	display: none !important;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > [data-eilmo-label]:not([data-eilmo-label=''])::before {
+	content: attr(data-eilmo-label);
+	display: block;
+	position: static !important;
+	float: none !important;
+	width: auto !important;
+	height: auto !important;
+	margin-bottom: 5px;
+	color: #667085;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-order_number, .column-order_title)::before {
+	content: none !important;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .check-column { order: 1; flex: 0 0 28px; padding-top: 20px !important; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-order_number, .column-order_title) { order: 2; flex: 0 1 125px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_verify_customer { order: 3; flex: 1 1 220px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_verify_products { order: 4; flex: 1 1 225px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_verify_payment { order: 5; flex: 1 1 190px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_verify_status { order: 6; flex: 0 1 155px; }
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_security { order: 8; flex: 1 1 190px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_verify_proof { order: 9; flex: 1 1 155px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_courier_success { order: 10; flex: 2 1 275px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_cf_verify_order_note { order: 11; flex: 1 1 155px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-order_date, .column-date) { order: 12; flex: 0 1 90px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-order_total, .column-total) { order: 13; flex: 0 1 95px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-origin, .column-order_origin) { order: 14; flex: 0 1 90px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-wc_actions, .column-order_actions) { order: 15; flex: 0 1 105px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .column-eilmo_meta_purchase { order: 16; flex: 0 1 80px; }
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr:not(.eilmo-cf-workflow-row) {
+	display: block;
+	padding: 20px;
+	border: 1px solid #d9e0e8;
+	border-radius: 12px;
+	background: #fff;
+}
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr:not(.eilmo-cf-workflow-row) > td {
+	display: block;
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0 !important;
+	max-width: none !important;
+}
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-cell { gap: 3px; line-height: 1.4; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody td a { cursor: pointer; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-phone { font-size: 13px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-address-lines { margin-top: 2px; font-size: 12px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-product-line { margin-bottom: 3px; padding-bottom: 3px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-products:not(.is-expanded) .eilmo-cf-otm-product-line:nth-of-type(n+3) { display: none; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-products-toggle { align-self: flex-start; margin-top: 3px; padding: 0; border: 0; background: transparent; color: #2271b1; cursor: pointer; font: inherit; font-weight: 600; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-products-toggle:hover { text-decoration: underline; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-order-note { max-height: none; overflow: visible; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-proof-open { flex-direction: row; align-items: center; gap: 7px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-proof-open img { width: 36px; height: 36px; }
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-status { gap: 7px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-status-select { height: 34px; min-height: 34px; font-size: 12px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-status-save { height: 32px; min-height: 32px; border-color: #2271b1; background: #2271b1; color: #fff; font-size: 12px; font-weight: 700; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-otm-status-save:hover { background: #135e96; color: #fff; }
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__action-row { grid-template-columns: minmax(0, 1fr) 30px; gap: 3px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__actions .button { min-height: 30px; padding: 3px 5px; font-size: 11px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__edit-button { width: 30px; min-width: 30px; max-width: 30px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__check .button { width: auto; }
+
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-toolbar {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 10px 0;
+	padding: 10px 14px;
+	border: 1px solid #d9e0e8;
+	border-radius: 10px;
+	background: #fff;
+}
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-toolbar strong { margin-right: auto; font-size: 14px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-toolbar__select { display: inline-flex; align-items: center; gap: 6px; color: #50575e; font-size: 12px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-toolbar__sort { display: inline-flex; align-items: center; gap: 6px; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-toolbar__sort a { display: inline-flex; align-items: center; gap: 3px; padding: 4px 8px; border: 1px solid #d9e0e8; border-radius: 6px; text-decoration: none; }
+body.eilmo-cf-order-workflow .eilmo-cf-workflow-toolbar__sort a:hover { border-color: #2271b1; }
+
+body.eilmo-cf-order-workflow .tablenav.top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; height: auto; min-height: 36px; }
+body.eilmo-cf-order-workflow .tablenav.top .actions { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; float: none; }
+body.eilmo-cf-order-workflow .tablenav.top .actions select { max-width: 100%; }
+body.eilmo-cf-order-workflow .tablenav.top .tablenav-pages { float: none; margin-left: auto; }
+
+
+@media (max-width: 782px) {
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-eilmo_cf_verify_customer, .column-eilmo_cf_verify_products, .column-eilmo_cf_verify_payment, .column-eilmo_cf_verify_status) { flex: 1 1 170px; }
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__actions { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row { gap: 14px; padding: 14px; }
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-order_number, .column-order_title) { flex: 1 1 calc(100% - 42px); }
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-order_number, .column-order_title) :is(.small-screen-only, .toggle-row) { display: none !important; }
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > :is(.column-eilmo_cf_verify_customer, .column-eilmo_cf_verify_products, .column-eilmo_cf_verify_payment, .column-eilmo_cf_verify_status, .column-eilmo_cf_security, .column-eilmo_cf_verify_proof, .column-eilmo_cf_courier_success, .column-eilmo_cf_verify_order_note) { flex: 1 1 100%; }
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table tbody tr.eilmo-cf-workflow-row > .check-column { padding-top: 0 !important; }
+	body.eilmo-cf-order-workflow .eilmo-cf-workflow-table .eilmo-cf-courier__actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
