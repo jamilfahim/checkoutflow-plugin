@@ -21,11 +21,13 @@ namespace EilmoCheckout\Admin {
 }
 namespace {
 	define( 'ABSPATH', __DIR__ );
+	define( 'DAY_IN_SECONDS', 86400 );
 	function sanitize_key( $value ): string { return strtolower( preg_replace( '/[^a-z0-9_\-]/', '', (string) $value ) ); }
 	function sanitize_text_field( $value ): string { return trim( strip_tags( (string) $value ) ); }
 	function absint( $value ): int { return abs( (int) $value ); }
 	function get_option( $key, $default = false ) { return $default; }
 	function wp_json_encode( $value ): string { return json_encode( $value ); }
+	function wp_salt( $scheme = '' ): string { return 'regression-test-salt'; }
 	function __( $message, $domain = '' ): string { return $message; }
 	function untrailingslashit( $value ): string { return rtrim( $value, '/' ); }
 	function esc_url_raw( $value ): string { return $value; }
@@ -44,8 +46,52 @@ namespace {
 	require dirname( __DIR__ ) . '/src/Couriers/Services/SteadfastProfileService.php';
 	require dirname( __DIR__ ) . '/src/Couriers/Services/FraudRiskService.php';
 	require dirname( __DIR__ ) . '/src/Couriers/Services/CourierSuccessService.php';
+	require dirname( __DIR__ ) . '/src/Couriers/Services/FraudDecisionToken.php';
+	$merchant_response = array(
+		'delivery_ratio' => 100, 'cancellation_ratio' => 0,
+		'volume_band' => 'medium', 'volume_range' => '10+',
+		'fraud_reports' => 0, 'fraud_categories' => array(),
+		'fraud_keywords' => array(), 'frauds' => array(),
+		'delivered_count' => null, 'cancelled_count' => null,
+		'reported_by_you' => false,
+	);
+	$new_merchant = \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( $merchant_response );
+	$normalized_again = \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( $new_merchant );
+	if ( $new_merchant !== $normalized_again || null !== $new_merchant['delivered_count'] || null !== $new_merchant['cancelled_count'] || 0 !== $new_merchant['fraud_reports'] || '10+' !== $new_merchant['volume_range'] || false !== $new_merchant['reported_by_you'] ) {
+		throw new \RuntimeException( 'New-merchant score lost the optional-count distinction or failed a normalization round trip.' );
+	}
+	$regular_response = array_merge( $merchant_response, array(
+		'delivery_ratio' => 25, 'cancellation_ratio' => 75,
+		'delivered_count' => 12, 'cancelled_count' => 3,
+		'fraud_reports' => 2, 'fraud_categories' => array( 'no_response' => 2 ),
+		'fraud_keywords' => array( 'false address' ),
+		'frauds' => array( array( 'category' => 'fake_order', 'reason' => 'No response' ) ),
+		'reported_by_you' => true,
+	) );
+	$regular = \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( $regular_response );
+	if ( 12 !== $regular['delivered_count'] || 3 !== $regular['cancelled_count'] || 2 !== $regular['fraud_reports'] || ! $regular['reported_by_you'] || empty( $regular['fraud_details'] ) || $regular !== \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( $regular ) ) {
+		throw new \RuntimeException( 'Regular-merchant counts and fraud details were not retained.' );
+	}
+	$zero_counts = \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( array_merge( $merchant_response, array( 'delivered_count' => 0, 'cancelled_count' => 0 ) ) );
+	if ( 0 !== $zero_counts['delivered_count'] || 0 !== $zero_counts['cancelled_count'] ) {
+		throw new \RuntimeException( 'Numeric zero counts were confused with unavailable counts.' );
+	}
+	$risk_service = new \EilmoCheckout\Couriers\Services\FraudRiskService();
+	if ( 'critical' !== $risk_service->evaluate( array( 'stats' => array( 'steadfast' => $regular ) ) )['band'] ) {
+		throw new \RuntimeException( 'Published 10+ range did not meet the minimum order threshold.' );
+	}
+	$unproven = \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( array_merge( $merchant_response, array( 'delivery_ratio' => 25, 'volume_range' => '' ) ) );
+	if ( 'high' !== $risk_service->evaluate( array( 'stats' => array( 'steadfast' => $unproven ) ) )['band'] ) {
+		throw new \RuntimeException( 'Unknown volume was treated as enough history to block.' );
+	}
+	$token_service = new \EilmoCheckout\Couriers\Services\FraudDecisionToken();
+	$token = $token_service->create( '01712345678', array( 'stats' => array( 'steadfast' => $new_merchant ) ), $risk_service->evaluate( array( 'stats' => array( 'steadfast' => $new_merchant ) ) ) );
+	$verified = $token_service->verify( $token, '01712345678' );
+	if ( $verified instanceof WP_Error || null !== $verified['snapshot']['stats']['steadfast']['delivered_count'] || '10+' !== $verified['snapshot']['stats']['steadfast']['volume_range'] ) {
+		throw new \RuntimeException( 'Checkout decision token lost the new Steadfast fields.' );
+	}
 	$profile = \EilmoCheckout\Couriers\Services\SteadfastProfileService::normalize( array(
-		'delivery_ratio' => 92, 'cancellation_ratio' => 7, 'volume_band' => 'high',
+		'delivery_ratio' => 92, 'cancellation_ratio' => 7, 'volume_band' => 'high', 'volume_range' => '21–200',
 		'total_reports' => 2, 'fraud_categories' => array( 'no_response' => 2 ),
 		'total_delivered' => 999,
 	) );
@@ -97,13 +143,13 @@ namespace {
 		throw new \RuntimeException( 'BD Courier did not extract the live Steadfast volume range.' );
 	}
 	$rate_only_risk = ( new \EilmoCheckout\Couriers\Services\FraudRiskService() )->evaluate( array( 'stats' => array( 'steadfast' => array(
-		'delivery_ratio' => $round_trip['ratio'], 'volume_band' => $round_trip['volume_band'],
+		'delivery_ratio' => $round_trip['ratio'], 'volume_band' => $round_trip['volume_band'], 'parcel_range' => $round_trip['parcel_range'],
 	) ) ) );
 	if ( 'trusted' !== $rate_only_risk['band'] ) {
 		throw new \RuntimeException( 'BD Courier Steadfast 100% display band was not trusted.' );
 	}
 	$low_rate_risk = ( new \EilmoCheckout\Couriers\Services\FraudRiskService() )->evaluate( array( 'stats' => array( 'steadfast' => array(
-		'delivery_ratio' => 25, 'volume_band' => 'medium',
+		'delivery_ratio' => 25, 'volume_band' => 'medium', 'parcel_range' => '6–20',
 	) ) ) );
 	if ( 'critical' !== $low_rate_risk['band'] ) {
 		throw new \RuntimeException( 'BD Courier Steadfast display band did not change with the rate.' );

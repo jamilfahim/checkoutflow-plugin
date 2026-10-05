@@ -32,8 +32,8 @@ final class FraudRiskService {
 		$stats = isset( $snapshot['stats'] ) && is_array( $snapshot['stats'] )
 			? $snapshot['stats']
 			: array();
-		/* Steadfast no longer supplies parcel counts. Its published delivery
-		 * ratio is authoritative; store history must not be added to it. */
+		/* Steadfast's published ratio is authoritative. Its optional counts and
+		 * store history must never be substituted for that ratio. */
 		$steadfast = isset( $stats['steadfast'] ) && is_array( $stats['steadfast'] ) && array_key_exists( 'delivery_ratio', $stats['steadfast'] )
 			? $stats['steadfast'] : null;
 		if ( null !== $steadfast ) {
@@ -123,14 +123,14 @@ final class FraudRiskService {
 		);
 	}
 
-	/** Apply the existing merchant thresholds to Steadfast's ratio and volume band. */
+	/** Apply merchant thresholds to Steadfast's ratio and published volume range. */
 	private function evaluate_steadfast( array $profile, array $config ): array {
 		$volume = sanitize_key( (string) ( $profile['volume_band'] ?? 'none' ) );
 		$has_history = 'none' !== $volume;
 		$ratio = max( 0, min( 100, (float) ( $profile['delivery_ratio'] ?? 0 ) ) );
 		$minimum = max( 1, absint( $config['minimum_orders_for_block'] ?? 5 ) );
-		/* The low band is 1–5, so its exact count cannot be inferred. */
-		$enough_for_block = in_array( $volume, array( 'medium', 'high', 'very_high' ), true ) && $minimum <= ( 'medium' === $volume ? 6 : ( 'high' === $volume ? 21 : 201 ) );
+		$volume_minimum = SteadfastProfileService::volume_minimum( $profile );
+		$enough_for_block = null !== $volume_minimum && $volume_minimum >= $minimum;
 		$band = 'unknown';
 		$action = $this->action( $config['unknown_action'] ?? 'allow', 'allow' );
 		if ( $has_history ) {

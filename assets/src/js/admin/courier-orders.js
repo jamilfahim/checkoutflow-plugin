@@ -241,8 +241,14 @@
 		if (!stat || stat.volume_band === 'none' || !stat.available) { return 'unknown'; }
 		var ratio = Number(stat.delivery_ratio || 0);
 		var risk = riskConfig();
-		var bandMinimum = {medium: 6, high: 21, very_high: 201};
-		var enoughHistory = Number(bandMinimum[stat.volume_band] || 0) >= risk.minimumOrders;
+		var range = String(stat.volume_range || stat.parcel_range || '').match(/^(\d+)(?:\s*(?:-|–)\s*\d+|\+)?$/);
+		var delivered = stat.delivered_count;
+		var cancelled = stat.cancelled_count;
+		var minimum = range ? Number(range[1]) :
+			(delivered !== null && delivered !== undefined && cancelled !== null && cancelled !== undefined &&
+			Number.isFinite(Number(delivered)) && Number.isFinite(Number(cancelled))
+				? Number(delivered) + Number(cancelled) : null);
+		var enoughHistory = minimum !== null && minimum >= risk.minimumOrders;
 		if (enoughHistory && ratio < risk.blockRate) { return 'critical'; }
 		if (ratio < risk.advanceRate) { return 'high'; }
 		if (ratio < risk.trustedRate) { return 'review'; }
@@ -381,6 +387,7 @@
 		return getSteadfastBand({
 			available: true,
 			volume_band: stat.volume_band,
+			parcel_range: stat.parcel_range,
 			delivery_ratio: stat.ratio
 		});
 	}
@@ -495,15 +502,26 @@
 		}
 		row('Delivery Ratio', stat.available ? String(Number(stat.delivery_ratio || 0)) + '%' : 'No history');
 		row('Cancellation Ratio', stat.available ? String(Number(stat.cancellation_ratio || 0)) + '%' : 'No history');
-		var volumes = {none: 'None', low: 'Low (1–5)', medium: 'Medium (6–20)', high: 'High (21–200)', very_high: 'Very high (200+)'};
-		row('Customer Volume', volumes[stat.volume_band] || 'None');
-		row('Fraud Reports (all merchants)', Number(stat.total_reports || 0));
-		if (Number(stat.total_reports || 0) > 0 && stat.fraud_categories && typeof stat.fraud_categories === 'object') {
+		var volumes = {none: 'None', low: 'Low', medium: 'Medium', high: 'High', very_high: 'Very high'};
+		var volume = volumes[stat.volume_band] || 'None';
+		row('Customer Volume', stat.volume_range ? volume + ' (' + stat.volume_range + ')' : volume);
+		if (stat.delivered_count !== null && stat.delivered_count !== undefined) { row('Delivered Parcels', stat.delivered_count); }
+		if (stat.cancelled_count !== null && stat.cancelled_count !== undefined) { row('Cancelled Parcels', stat.cancelled_count); }
+		var reports = stat.fraud_reports !== undefined ? stat.fraud_reports : stat.total_reports;
+		if (reports !== null && reports !== undefined) { row('Fraud Reports (all merchants)', Number(reports)); }
+		if (Number(reports) > 0 && stat.fraud_categories && typeof stat.fraud_categories === 'object') {
 			var details = Object.keys(stat.fraud_categories).map(function (key) {
 				return key.replace(/_/g, ' ') + ': ' + String(stat.fraud_categories[key]);
 			}).join(', ');
 			if (details) { row('Report details', details); }
 		}
+		if (Array.isArray(stat.fraud_keywords) && stat.fraud_keywords.length) {
+			row('Fraud Keywords', stat.fraud_keywords.join(', '));
+		}
+		if (Array.isArray(stat.fraud_details) && stat.fraud_details.length) {
+			row('Fraud Details', stat.fraud_details.join('; '));
+		}
+		if (typeof stat.reported_by_you === 'boolean') { row('Reported by Your Store', stat.reported_by_you ? 'Yes' : 'No'); }
 		if (result && result._meta && result._meta.checkedAt) {
 			row('Checked', new Date(Number(result._meta.checkedAt) * 1000).toLocaleString());
 		}

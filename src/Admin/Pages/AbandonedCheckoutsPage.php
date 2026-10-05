@@ -783,6 +783,7 @@ final class AbandonedCheckoutsPage {
 								'stats' => array( 'steadfast' => array(
 									'delivery_ratio' => $provider_ratio,
 									'volume_band' => $provider['volume_band'],
+									'parcel_range' => $provider['parcel_range'],
 								) ),
 							) )['band'] ?? 'unknown' ) );
 							$steadfast_rate_only_band = $provider_band;

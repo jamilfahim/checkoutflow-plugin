@@ -479,7 +479,7 @@ final class CourierSuccessService {
 			if ( 'fresh' === ( $cached['cache_status'] ?? '' ) ) {
 				return $cached;
 			}
-			if ( 'yes' !== ( $config['refresh_expired_cache'] ?? 'yes' ) ) {
+			if ( 'yes' !== ( $config['refresh_expired_cache'] ?? 'yes' ) && empty( $cached['profile_schema_outdated'] ) ) {
 				return $cached;
 			}
 		}
@@ -599,12 +599,14 @@ final class CourierSuccessService {
 		$checked_at = max( 0, absint( $snapshot['checked_at'] ?? 0 ) );
 		$age_seconds = $checked_at > 0 ? max( 0, time() - $checked_at ) : PHP_INT_MAX;
 		$cache_days = max( 1, min( 365, absint( $this->get_live_fraud_config()['cache_days'] ?? 30 ) ) );
-		$fresh = $age_seconds <= $cache_days * DAY_IN_SECONDS;
+		$profile_current = $this->snapshot_has_latest_steadfast_profile( $snapshot );
+		$fresh = $age_seconds <= $cache_days * DAY_IN_SECONDS && $profile_current;
 		if ( ! $fresh && ! $include_stale ) {
 			return array();
 		}
 
 		$snapshot['cache_status'] = $fresh ? 'fresh' : 'stale';
+		$snapshot['profile_schema_outdated'] = ! $profile_current;
 		$snapshot['cache_age_days'] = $checked_at > 0 ? round( $age_seconds / DAY_IN_SECONDS, 1 ) : 0;
 		$snapshot['stats'] = $this->filter_stats_for_selected_provider(
 			isset( $snapshot['stats'] ) && is_array( $snapshot['stats'] ) ? $snapshot['stats'] : array()
@@ -619,7 +621,7 @@ final class CourierSuccessService {
 
 		$checked_at = max( 0, absint( $snapshot['checked_at'] ?? 0 ) );
 		$cache_days = max( 1, min( 365, absint( $this->get_live_fraud_config()['cache_days'] ?? 30 ) ) );
-		return $checked_at <= 0 || time() - $checked_at > $cache_days * DAY_IN_SECONDS;
+		return $checked_at <= 0 || time() - $checked_at > $cache_days * DAY_IN_SECONDS || ! $this->snapshot_has_latest_steadfast_profile( $snapshot );
 	}
 
 	/** Determine whether a snapshot contains actual courier provider data. */
@@ -692,12 +694,18 @@ final class CourierSuccessService {
 
 		$steadfast_profile = $snapshot['stats']['steadfast'] ?? null;
 		if ( is_array( $steadfast_profile ) && array_key_exists( 'delivery_ratio', $steadfast_profile ) ) {
+			$volume = sanitize_key( (string) ( $steadfast_profile['volume_band'] ?? 'none' ) );
+			$range = isset( $steadfast_profile['volume_range'] ) && is_scalar( $steadfast_profile['volume_range'] )
+				? trim( (string) $steadfast_profile['volume_range'] ) : '';
+			if ( '' !== $range ) {
+				$volume .= ' (' . $range . ')';
+			}
 			$order->add_order_note( sprintf(
 				/* translators: 1: decision, 2: delivered ratio, 3: volume band. */
 				__( 'Eilmo Smart Risk Check: %1$s · %2$s%% delivered · customer volume %3$s. Checkout snapshot saved.', 'eilmo-checkout-flow' ),
 				ucfirst( sanitize_key( (string) ( $evaluation['action'] ?? 'allow' ) ) ),
 				number_format_i18n( (float) ( $steadfast_profile['delivery_ratio'] ?? 0 ), 2 ),
-				sanitize_key( (string) ( $steadfast_profile['volume_band'] ?? 'none' ) )
+				$volume
 			) );
 		} else {
 		$order->add_order_note(
@@ -1660,6 +1668,15 @@ final class CourierSuccessService {
 		}
 		$profile = $snapshot['stats']['steadfast'] ?? null;
 		return is_array( $profile ) && array_key_exists( 'delivery_ratio', $profile );
+	}
+
+	/** Older saved score snapshots stay visible but are due for a fresh lookup. */
+	private function snapshot_has_latest_steadfast_profile( array $snapshot ): bool {
+		$profile = $snapshot['stats']['steadfast'] ?? null;
+		if ( ! is_array( $profile ) || ! array_key_exists( 'delivery_ratio', $profile ) ) {
+			return true;
+		}
+		return absint( $profile['schema_version'] ?? 0 ) >= SteadfastProfileService::SCHEMA_VERSION;
 	}
 
 	/** @return array<string,mixed> */

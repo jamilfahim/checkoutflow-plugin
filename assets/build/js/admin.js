@@ -295,13 +295,20 @@
 		}
 		row('Delivery Ratio', profile.available ? formatRatio(profile.delivery_ratio) + '%' : 'No history');
 		row('Cancellation Ratio', profile.available ? formatRatio(profile.cancellation_ratio) + '%' : 'No history');
-		var volumes = {none: 'None', low: 'Low (1–5)', medium: 'Medium (6–20)', high: 'High (21–200)', very_high: 'Very high (200+)'};
-		row('Customer Volume', volumes[profile.volume_band] || 'None');
-		row('Fraud Reports (all merchants)', Number(profile.total_reports || 0));
-		if (Number(profile.total_reports || 0) > 0 && profile.fraud_categories && typeof profile.fraud_categories === 'object') {
+		var volumes = {none: 'None', low: 'Low', medium: 'Medium', high: 'High', very_high: 'Very high'};
+		var volume = volumes[profile.volume_band] || 'None';
+		row('Customer Volume', profile.volume_range ? volume + ' (' + profile.volume_range + ')' : volume);
+		if (profile.delivered_count !== null && profile.delivered_count !== undefined) { row('Delivered Parcels', profile.delivered_count); }
+		if (profile.cancelled_count !== null && profile.cancelled_count !== undefined) { row('Cancelled Parcels', profile.cancelled_count); }
+		var reports = profile.fraud_reports !== undefined ? profile.fraud_reports : profile.total_reports;
+		if (reports !== null && reports !== undefined) { row('Fraud Reports (all merchants)', Number(reports)); }
+		if (Number(reports) > 0 && profile.fraud_categories && typeof profile.fraud_categories === 'object') {
 			var details = Object.keys(profile.fraud_categories).map(function (key) { return key.replace(/_/g, ' ') + ': ' + String(profile.fraud_categories[key]); }).join(', ');
 			if (details) { row('Report details', details); }
 		}
+		if (Array.isArray(profile.fraud_keywords) && profile.fraud_keywords.length) { row('Fraud Keywords', profile.fraud_keywords.join(', ')); }
+		if (Array.isArray(profile.fraud_details) && profile.fraud_details.length) { row('Fraud Details', profile.fraud_details.join('; ')); }
+		if (typeof profile.reported_by_you === 'boolean') { row('Reported by Your Store', profile.reported_by_you ? 'Yes' : 'No'); }
 		if (Number(data.checked_at || 0) > 0) { row('Checked', new Date(Number(data.checked_at) * 1000).toLocaleString()); }
 		box.appendChild(body);
 		var store = data.store || {};
