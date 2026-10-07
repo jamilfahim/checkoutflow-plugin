@@ -17217,6 +17217,15 @@
 			offerAvailable:
 				false,
 
+			discountOfferAvailable:
+				false,
+
+			freeDelivery:
+				false,
+
+			freeDeliveryBadge:
+				'',
+
 			eligible:
 				false,
 
@@ -17316,6 +17325,17 @@
 				settings.maximum_discount
 			);
 
+		const freeDelivery =
+			isEnabled(
+				settings.free_delivery
+			);
+
+		const freeDeliveryBadge =
+			String(
+				settings.free_delivery_badge ||
+					'Free Delivery'
+			);
+
 		const allowedBasis = [
 			'product_total',
 			'discounted_product_total',
@@ -17330,23 +17350,49 @@
 				? settings.basis
 				: 'discounted_product_total';
 
+		const fullPaymentGrandTotal =
+			roundMoney(
+				Math.max(
+					0,
+					toNumber(totals.fullPaymentGrandTotal) -
+						(freeDelivery ? toNumber(totals.deliveryCharge) : 0)
+				)
+			);
+
+		const fullPaymentTotals = Object.assign({}, totals, {
+			fullPaymentGrandTotal: fullPaymentGrandTotal,
+		});
+
 		const basisAmount =
 			roundMoney(
 				getFullPaymentBasisAmount(
 					basis,
-					totals
+					fullPaymentTotals
 				)
 			);
 
-		const offerAvailable =
+		const discountOfferAvailable =
 			enabled &&
 			value > 0;
+
+		const offerAvailable =
+			discountOfferAvailable ||
+			freeDelivery;
 
 		result.enabled =
 			enabled;
 
 		result.offerAvailable =
 			offerAvailable;
+
+		result.discountOfferAvailable =
+			discountOfferAvailable;
+
+		result.freeDelivery =
+			freeDelivery;
+
+		result.freeDeliveryBadge =
+			freeDeliveryBadge;
 
 		result.type =
 			type;
@@ -17366,7 +17412,10 @@
 		result.maximumDiscount =
 			maximumDiscount;
 
-		if (offerAvailable) {
+		result.discountedTotal =
+			fullPaymentGrandTotal;
+
+		if (discountOfferAvailable) {
 			result.discountLabel =
 				getConfiguredDiscountLabel(
 					type,
@@ -17374,7 +17423,7 @@
 				);
 		}
 
-		if (!offerAvailable) {
+		if (!discountOfferAvailable) {
 			return result;
 		}
 
@@ -17426,7 +17475,7 @@
 			Math.min(
 				saving,
 				basisAmount,
-				totals.fullPaymentGrandTotal
+				fullPaymentGrandTotal
 			);
 
 		saving =
@@ -17470,7 +17519,7 @@
 			roundMoney(
 				Math.max(
 					0,
-					totals.grandTotal -
+					fullPaymentGrandTotal -
 						saving
 				)
 			);
@@ -18074,7 +18123,10 @@
 			);
 
 		const discountedTotal =
-			discount.eligible
+			(
+				discount.eligible ||
+				discount.freeDelivery
+			)
 				? discount.discountedTotal
 				: totals.grandTotal;
 
@@ -18147,28 +18199,34 @@
 		}
 
 		if (badge) {
+			const badgeParts = [];
+
 			if (
-				discount.offerAvailable &&
+				discount.eligible &&
+				discount.saving > 0 &&
 				discount.discountLabel
 			) {
-				badge.textContent =
-					replaceTokens(
-						texts.discount_badge ||
-							'Get {discount} OFF',
-						tokens
-					);
-
-				badge.hidden =
-					'' ===
-						badge.textContent
-							.trim();
-			} else {
-				badge.textContent =
-					'';
-
-				badge.hidden =
-					true;
+				const discountBadge = replaceTokens(
+					texts.discount_badge ||
+						'Get {discount} OFF',
+					tokens
+				).trim();
+				if (discountBadge) badgeParts.push(discountBadge);
 			}
+
+			if (discount.freeDelivery && toNumber(totals.deliveryCharge) > 0) {
+				const freeBadge = String(
+					texts.free_delivery_badge ||
+						discount.freeDeliveryBadge ||
+						'Free Delivery'
+				).trim();
+				if (freeBadge) badgeParts.push(freeBadge);
+			}
+
+			badge.textContent = badgeParts.filter(function (value, index, items) {
+				return value && items.indexOf(value) === index;
+			}).join(' + ');
+			badge.hidden = badge.dataset.showBadge === 'no' || '' === badge.textContent.trim();
 		}
 	}
 
@@ -18206,9 +18264,11 @@
 		let payNow = advanceResult.payNow;
 
 		if ('full' === paymentType) {
-			payNow = discount.eligible
-				? discount.discountedTotal
-				: totals.grandTotal;
+			payNow =
+				discount.eligible ||
+				discount.freeDelivery
+					? discount.discountedTotal
+					: totals.grandTotal;
 		}
 
 		note.textContent = replaceTokens(
@@ -18730,7 +18790,12 @@
 			) {
 				appliedDiscount =
 					discount.saving;
+			}
 
+			if (
+				discount.eligible ||
+				discount.freeDelivery
+			) {
 				payableGrandTotal =
 					discount
 						.discountedTotal;
@@ -19194,6 +19259,13 @@
 				checkout,
 				paymentType
 			);
+
+			if (
+				window.eilmoCfDelivery &&
+				'function' === typeof window.eilmoCfDelivery.refresh
+			) {
+				window.eilmoCfDelivery.refresh(checkout);
+			}
 
 			refresh(
 				checkout
@@ -36600,11 +36672,19 @@
 		const choice = root.querySelector(S.variationChoice + '[data-variation-id="' + variationId + '"]');
 		const label = compact.querySelector('[data-eilmo-package-compact-label]');
 		const price = compact.querySelector('[data-eilmo-package-compact-price]');
+		const regular = compact.querySelector('[data-eilmo-package-compact-regular]');
+		const saving = compact.querySelector('[data-eilmo-package-compact-saving]');
 		if (element(choice)) {
 			const sourceLabel = choice.querySelector('.eilmo-cf-single-product__choice-label');
 			const sourcePrice = choice.querySelector('.eilmo-cf-single-product__choice-price');
+			const sourceRegular = choice.querySelector('.eilmo-cf-single-product__choice-regular-price');
+			const sourceSaving = choice.querySelector('.eilmo-cf-single-product__choice-saving');
 			if (element(label)) label.textContent = sourceLabel ? sourceLabel.textContent.trim() : '';
-			if (element(price)) price.innerHTML = sourcePrice ? sourcePrice.innerHTML : '';
+			[[price, sourcePrice], [regular, sourceRegular], [saving, sourceSaving]].forEach(function (pair) {
+				if (!element(pair[0])) return;
+				pair[0].innerHTML = element(pair[1]) ? pair[1].innerHTML : '';
+				pair[0].hidden = !element(pair[1]) || pair[1].hidden || !pair[0].textContent.trim();
+			});
 		}
 	}
 
@@ -36623,7 +36703,7 @@
 		compact.setAttribute('data-eilmo-package-compact', '');
 		const checkout = root.closest(S.checkout);
 		const changeLabel = checkoutText(checkout, 'product.change', 'Change');
-		compact.innerHTML = '<div class="eilmo-cf-package-compact__info"><strong data-eilmo-package-compact-label></strong><span data-eilmo-package-compact-price></span></div><button type="button" class="eilmo-cf-package-compact__change" data-eilmo-package-change></button>';
+		compact.innerHTML = '<div class="eilmo-cf-package-compact__info"><strong data-eilmo-package-compact-label></strong><span class="eilmo-cf-single-product__choice-price" data-eilmo-package-compact-price></span><del class="eilmo-cf-single-product__choice-regular-price" data-eilmo-package-compact-regular hidden></del><span class="eilmo-cf-single-product__choice-saving" data-eilmo-package-compact-saving hidden></span></div><button type="button" class="eilmo-cf-package-compact__change" data-eilmo-package-change></button>';
 		const changeButton = compact.querySelector('[data-eilmo-package-change]');
 		if (element(changeButton, 'BUTTON')) changeButton.textContent = changeLabel;
 		grid.parentNode.insertBefore(compact, grid.nextSibling);

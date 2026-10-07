@@ -489,6 +489,7 @@ final class AdvancePaymentRenderer {
 			return '';
 		}
 		$layout_overrides = isset( $context['layout_overrides'] ) && is_array( $context['layout_overrides'] ) ? $context['layout_overrides'] : array();
+		$data['show_full_payment_badge'] = 'no' !== (string) ( $layout_overrides['show_full_payment_badge'] ?? 'yes' );
 		$has_column_override = false;
 		foreach ( array( 'desktop' => 4, 'tablet' => 3, 'mobile' => 2 ) as $device => $maximum ) {
 			$key = 'payment_options_columns_' . $device;
@@ -775,7 +776,8 @@ final class AdvancePaymentRenderer {
 						$payment_type,
 						$grand_total,
 						$full_payment_discount,
-						$full_payment_texts
+						$full_payment_texts,
+						! empty( $data['show_full_payment_badge'] )
 					);
 				}
 				?>
@@ -1164,6 +1166,7 @@ final class AdvancePaymentRenderer {
 	 * @param float                $grand_total  Grand total.
 	 * @param array<string, mixed> $discount     Discount result.
 	 * @param array<string, mixed> $texts        Dynamic texts.
+	 * @param bool                 $show_badge   Widget badge visibility.
 	 *
 	 * @return void
 	 */
@@ -1172,7 +1175,8 @@ final class AdvancePaymentRenderer {
 		string $payment_type,
 		float $grand_total,
 		array $discount,
-		array $texts
+		array $texts,
+		bool $show_badge
 	): void {
 		$input_id =
 			sprintf(
@@ -1251,7 +1255,7 @@ final class AdvancePaymentRenderer {
 
 		$badge_parts = array();
 
-		if ( ! empty( $discount['discount_offer_available'] ) && '' !== $discount_label ) {
+		if ( $eligible && $saving > 0 && '' !== $discount_label ) {
 			$discount_badge = $this->replace_text_tokens(
 				(string) ( $texts['discount_badge'] ?? '' ),
 				$tokens
@@ -1261,7 +1265,7 @@ final class AdvancePaymentRenderer {
 			}
 		}
 
-		if ( ! empty( $discount['free_delivery'] ) ) {
+		if ( $this->normalize_amount( $discount['free_delivery_saving'] ?? 0 ) > 0 ) {
 			$free_badge = sanitize_text_field(
 				(string) (
 					$texts['free_delivery_badge'] ??
@@ -1351,17 +1355,18 @@ final class AdvancePaymentRenderer {
 						<?php echo esc_html( $description ); ?>
 					</span>
 
-					<span
-						class="eilmo-cf-advance-payment-option__badge"
-						data-eilmo-full-payment-discount-badge
-						<?php if ( ! $offer_available || '' === $badge_text ) : ?>
-							hidden
-						<?php endif; ?>
-					>
-						<?php echo esc_html( $badge_text ); ?>
-					</span>
-
 				<?php endif; ?>
+
+				<span
+					class="eilmo-cf-advance-payment-option__badge"
+					data-eilmo-full-payment-discount-badge
+					data-show-badge="<?php echo esc_attr( $show_badge ? 'yes' : 'no' ); ?>"
+					<?php if ( ! $show_badge || '' === $badge_text ) : ?>
+						hidden
+					<?php endif; ?>
+				>
+					<?php echo esc_html( $badge_text ); ?>
+				</span>
 
 			</span>
 

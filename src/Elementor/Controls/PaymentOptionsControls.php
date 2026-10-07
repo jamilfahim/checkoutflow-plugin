@@ -27,7 +27,7 @@ final class PaymentOptionsControls {
 
 		$widget->start_controls_section( 'eilmo_cf_style_payment_options', [
 			'label' => __( 'Payment Options', 'eilmo-checkout-flow' ),
-			'tab' => Controls_Manager::TAB_ADVANCED,
+			'tab' => Controls_Manager::TAB_STYLE,
 		] );
 
 		$widget->add_control( 'eilmo_cf_payment_options_section_heading', [ 'label' => __( 'Section', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::HEADING ] );
@@ -67,6 +67,9 @@ final class PaymentOptionsControls {
 		$widget->add_group_control( Group_Control_Typography::get_type(), [ 'name' => 'eilmo_cf_payment_card_amount_typography', 'selector' => $amount ] );
 
 		$widget->add_control( 'eilmo_cf_full_badge_heading', [ 'label' => __( 'Card Badge', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::HEADING, 'separator' => 'before' ] );
+		$widget->add_control( 'eilmo_cf_full_badge_background', [ 'label' => __( 'Background', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::COLOR, 'selectors' => [ $badge => 'background-color: {{VALUE}};' ] ] );
+		$widget->add_control( 'eilmo_cf_full_badge_color', [ 'label' => __( 'Text Color', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::COLOR, 'selectors' => [ $badge => 'color: {{VALUE}};' ] ] );
+		$widget->add_control( 'eilmo_cf_full_badge_border_color', [ 'label' => __( 'Border Color', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::COLOR, 'selectors' => [ $badge => 'border-color: {{VALUE}};' ] ] );
 		$widget->add_group_control( Group_Control_Typography::get_type(), [ 'name' => 'eilmo_cf_full_badge_typography', 'selector' => $badge ] );
 		$widget->add_responsive_control( 'eilmo_cf_full_badge_radius', [ 'label' => __( 'Border Radius', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::DIMENSIONS, 'size_units' => [ 'px' ], 'selectors' => [ $badge => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ] ] );
 		$widget->add_responsive_control( 'eilmo_cf_full_badge_padding', [ 'label' => __( 'Padding', 'eilmo-checkout-flow' ), 'type' => Controls_Manager::DIMENSIONS, 'size_units' => [ 'px' ], 'selectors' => [ $badge => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ] ] );

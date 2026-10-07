@@ -99,7 +99,7 @@ final class SingleProductRenderer {
 			1,
 			min( 12, absint( $overrides['max_visible_variations'] ?? 4 ) )
 		);
-		foreach ( array( 'show_package_title', 'show_package_helper', 'show_selected_quantity', 'show_variation_descriptions', 'show_description' ) as $visibility_key ) {
+		foreach ( array( 'show_package_title', 'show_package_helper', 'show_selected_quantity', 'show_variation_descriptions', 'show_description', 'show_checkout_price', 'show_checkout_regular_price', 'show_checkout_savings' ) as $visibility_key ) {
 			if ( array_key_exists( $visibility_key, $overrides ) ) {
 				$single_product[ $visibility_key ] = 'no' === (string) $overrides[ $visibility_key ] ? 'no' : 'yes';
 			}

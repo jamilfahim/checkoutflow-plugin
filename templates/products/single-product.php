@@ -42,6 +42,9 @@ $show_savings     = 'yes' === (string) ( $single_product['show_savings'] ?? 'no'
 $grid_show_price  = 'yes' === (string) ( $single_product['grid_show_price'] ?? 'yes' );
 $grid_show_regular_price = 'yes' === (string) ( $single_product['grid_show_regular_price'] ?? 'no' );
 $grid_show_savings = 'yes' === (string) ( $single_product['grid_show_savings'] ?? 'no' );
+$show_checkout_price = 'yes' === (string) ( $single_product['show_checkout_price'] ?? 'yes' );
+$show_checkout_regular_price = 'yes' === (string) ( $single_product['show_checkout_regular_price'] ?? 'yes' );
+$show_checkout_savings = 'yes' === (string) ( $single_product['show_checkout_savings'] ?? 'yes' );
 $show_selected_items = 'yes' === (string) ( $single_product['show_selected_items'] ?? 'no' );
 $show_variation_badges = 'yes' === (string) ( $single_product['show_variation_badges'] ?? 'yes' );
 $selected_items_show_quantity = 'yes' === (string) ( $single_product['selected_items_show_quantity'] ?? 'yes' );
@@ -468,15 +471,17 @@ $simple_initial_quantity = $simple_can_purchase && $auto_add ? 1 : 0;
 									<?php if ( 'no' !== (string) ( $single_product['show_variation_descriptions'] ?? 'yes' ) && $is_package_group && '' !== trim( (string) ( $option['description'] ?? '' ) ) ) : ?>
 										<span class="eilmo-cf-single-product__option-description"><?php echo esc_html( (string) $option['description'] ); ?></span>
 									<?php endif; ?>
-									<?php if ( $render_rich_option && ( $is_package_group || 'yes' === (string) ( $group['show_price'] ?? 'yes' ) ) ) : ?>
+									<?php if ( $render_rich_option && ( ( $is_package_group && ( $show_checkout_price || $show_checkout_regular_price ) ) || ( ! $is_package_group && ( 'yes' === (string) ( $group['show_price'] ?? 'yes' ) || 'yes' === (string) ( $group['show_regular_price'] ?? 'no' ) ) ) ) ) : ?>
 										<span class="eilmo-cf-single-product__option-price-row">
-											<span class="eilmo-cf-single-product__option-price" data-eilmo-single-option-price><?php echo wp_kses_post( (string) ( $option['price_html'] ?? '' ) ); ?></span>
-											<?php if ( $is_package_group || 'yes' === (string) ( $group['show_regular_price'] ?? 'no' ) ) : ?>
+											<?php if ( ( $is_package_group && $show_checkout_price ) || ( ! $is_package_group && 'yes' === (string) ( $group['show_price'] ?? 'yes' ) ) ) : ?>
+												<span class="eilmo-cf-single-product__option-price" data-eilmo-single-option-price><?php echo wp_kses_post( (string) ( $option['price_html'] ?? '' ) ); ?></span>
+											<?php endif; ?>
+											<?php if ( ( $is_package_group && $show_checkout_regular_price ) || ( ! $is_package_group && 'yes' === (string) ( $group['show_regular_price'] ?? 'no' ) ) ) : ?>
 												<del class="eilmo-cf-single-product__option-regular-price" data-eilmo-single-option-regular-price <?php echo '' !== (string) ( $option['regular_price_html'] ?? '' ) ? '' : 'hidden'; ?>><?php echo wp_kses_post( (string) ( $option['regular_price_html'] ?? '' ) ); ?></del>
 											<?php endif; ?>
 										</span>
 									<?php endif; ?>
-									<?php if ( $render_rich_option && ( $is_package_group || 'yes' === (string) ( $group['show_savings'] ?? 'no' ) ) ) : ?>
+									<?php if ( $render_rich_option && ( ( $is_package_group && $show_checkout_savings ) || ( ! $is_package_group && 'yes' === (string) ( $group['show_savings'] ?? 'no' ) ) ) ) : ?>
 										<span class="eilmo-cf-single-product__option-saving" data-eilmo-single-option-saving <?php echo '' !== (string) ( $option['saving_html'] ?? '' ) ? '' : 'hidden'; ?>><?php echo wp_kses_post( (string) ( $option['saving_html'] ?? '' ) ); ?></span>
 									<?php endif; ?>
 								</button>
@@ -505,9 +510,11 @@ $simple_initial_quantity = $simple_can_purchase && $auto_add ? 1 : 0;
 							<?php if ( 'no' !== (string) ( $single_product['show_variation_descriptions'] ?? 'yes' ) && '' !== trim( (string) ( $row['description'] ?? '' ) ) ) : ?>
 								<span class="eilmo-cf-single-product__choice-description"><?php echo esc_html( (string) $row['description'] ); ?></span>
 							<?php endif; ?>
-							<?php if ( $grid_show_price ) : ?>
+							<?php if ( $grid_show_price || $grid_show_regular_price ) : ?>
 								<span class="eilmo-cf-single-product__choice-price-row">
-									<span class="eilmo-cf-single-product__choice-price"><?php echo wp_kses_post( (string) ( $row['current_price_html'] ?? '' ) ); ?></span>
+									<?php if ( $grid_show_price ) : ?>
+										<span class="eilmo-cf-single-product__choice-price"><?php echo wp_kses_post( (string) ( $row['current_price_html'] ?? '' ) ); ?></span>
+									<?php endif; ?>
 									<?php if ( $grid_show_regular_price && '' !== (string) ( $row['regular_price_html'] ?? '' ) ) : ?>
 										<del class="eilmo-cf-single-product__choice-regular-price"><?php echo wp_kses_post( (string) $row['regular_price_html'] ); ?></del>
 									<?php endif; ?>

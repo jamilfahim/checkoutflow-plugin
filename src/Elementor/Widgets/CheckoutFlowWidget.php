@@ -235,6 +235,9 @@ final class CheckoutFlowWidget extends Widget_Base {
 			'show_package_helper' => __( 'Show Text Below Package Title', 'eilmo-checkout-flow' ),
 			'show_selected_quantity' => __( 'Show Selected & Quantity Section', 'eilmo-checkout-flow' ),
 			'show_descriptions' => __( 'Show Descriptions', 'eilmo-checkout-flow' ),
+			'show_package_price' => __( 'Show Package Price', 'eilmo-checkout-flow' ),
+			'show_package_regular_price' => __( 'Show Regular Price', 'eilmo-checkout-flow' ),
+			'show_package_savings' => __( 'Show Save Amount', 'eilmo-checkout-flow' ),
 		) as $control => $label ) {
 			$this->add_control( $control, array(
 				'label' => $label,
@@ -256,6 +259,15 @@ final class CheckoutFlowWidget extends Widget_Base {
 			'step' => 1,
 			'condition' => array( 'checkout_mode' => 'single', 'show_package_selection' => 'yes' ),
 			'description' => __( 'Up to this number are shown directly. Larger variation sets use a compact selected card with a Change modal.', 'eilmo-checkout-flow' ),
+		) );
+
+		$this->add_control( 'show_full_payment_badge', array(
+			'label' => __( 'Show Full Payment Offer Badge', 'eilmo-checkout-flow' ),
+			'type' => Controls_Manager::SWITCHER,
+			'label_on' => __( 'Show', 'eilmo-checkout-flow' ),
+			'label_off' => __( 'Hide', 'eilmo-checkout-flow' ),
+			'return_value' => 'yes',
+			'default' => 'yes',
 		) );
 
 
@@ -443,6 +455,9 @@ final class CheckoutFlowWidget extends Widget_Base {
 		$show_package_helper = 'yes' === (string) ( $elementor_settings['show_package_helper'] ?? 'yes' ) ? 'yes' : 'no';
 		$show_selected_quantity = 'yes' === (string) ( $elementor_settings['show_selected_quantity'] ?? 'yes' ) ? 'yes' : 'no';
 		$show_descriptions = 'yes' === (string) ( $elementor_settings['show_descriptions'] ?? 'yes' ) ? 'yes' : 'no';
+		$show_package_price = 'yes' === (string) ( $elementor_settings['show_package_price'] ?? 'yes' ) ? 'yes' : 'no';
+		$show_package_regular_price = 'yes' === (string) ( $elementor_settings['show_package_regular_price'] ?? 'yes' ) ? 'yes' : 'no';
+		$show_package_savings = 'yes' === (string) ( $elementor_settings['show_package_savings'] ?? 'yes' ) ? 'yes' : 'no';
 
 		$single_product_overrides = array(
 			'visibility'                   => 'hidden',
@@ -454,9 +469,12 @@ final class CheckoutFlowWidget extends Widget_Base {
 			'selected_items_show_quantity' => 'no',
 			'show_summary_items'           => 'yes',
 			'summary_items_show_quantity'  => 'no',
-			'grid_show_price'              => 'yes',
-			'grid_show_regular_price'      => 'no',
-			'grid_show_savings'            => 'no',
+			'grid_show_price'              => $show_package_price,
+			'grid_show_regular_price'      => $show_package_regular_price,
+			'grid_show_savings'            => $show_package_savings,
+			'show_checkout_price'          => $show_package_price,
+			'show_checkout_regular_price'  => $show_package_regular_price,
+			'show_checkout_savings'        => $show_package_savings,
 			/* Consumed directly by SingleProductRenderer after legacy sanitization. */
 			'show_checkout_selector'       => $show_package_selection,
 			'max_visible_variations'       => $max_visible_variations,
@@ -542,6 +560,7 @@ final class CheckoutFlowWidget extends Widget_Base {
 		$render_settings['checkout_language'] = $elementor_settings['checkout_language'] ?? '';
 		$render_settings['eilmo_widget_layout'] = array(
 			'show_delivery' => 'yes' === (string) ( $elementor_settings['show_delivery_section'] ?? 'yes' ) ? 'yes' : 'no',
+			'show_full_payment_badge' => 'yes' === (string) ( $elementor_settings['show_full_payment_badge'] ?? 'yes' ) ? 'yes' : 'no',
 			'payment_methods_arrangement' => sanitize_key( (string) ( $elementor_settings['payment_methods_arrangement'] ?? '' ) ),
 		);
 		foreach ( array( 'delivery', 'payment_options', 'payment_methods' ) as $group ) {

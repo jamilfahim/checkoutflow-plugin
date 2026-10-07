@@ -68,7 +68,7 @@ final class ProductSelectionControls {
 			'eilmo_cf_style_single_product_selection',
 			array(
 				'label' => __( 'Single Product / Package', 'eilmo-checkout-flow' ),
-				'tab' => Controls_Manager::TAB_ADVANCED,
+				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => array( 'checkout_mode' => 'single' ),
 			)
 		);

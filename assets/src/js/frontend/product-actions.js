@@ -373,11 +373,19 @@
 		const choice = root.querySelector(S.variationChoice + '[data-variation-id="' + variationId + '"]');
 		const label = compact.querySelector('[data-eilmo-package-compact-label]');
 		const price = compact.querySelector('[data-eilmo-package-compact-price]');
+		const regular = compact.querySelector('[data-eilmo-package-compact-regular]');
+		const saving = compact.querySelector('[data-eilmo-package-compact-saving]');
 		if (element(choice)) {
 			const sourceLabel = choice.querySelector('.eilmo-cf-single-product__choice-label');
 			const sourcePrice = choice.querySelector('.eilmo-cf-single-product__choice-price');
+			const sourceRegular = choice.querySelector('.eilmo-cf-single-product__choice-regular-price');
+			const sourceSaving = choice.querySelector('.eilmo-cf-single-product__choice-saving');
 			if (element(label)) label.textContent = sourceLabel ? sourceLabel.textContent.trim() : '';
-			if (element(price)) price.innerHTML = sourcePrice ? sourcePrice.innerHTML : '';
+			[[price, sourcePrice], [regular, sourceRegular], [saving, sourceSaving]].forEach(function (pair) {
+				if (!element(pair[0])) return;
+				pair[0].innerHTML = element(pair[1]) ? pair[1].innerHTML : '';
+				pair[0].hidden = !element(pair[1]) || pair[1].hidden || !pair[0].textContent.trim();
+			});
 		}
 	}
 
@@ -396,7 +404,7 @@
 		compact.setAttribute('data-eilmo-package-compact', '');
 		const checkout = root.closest(S.checkout);
 		const changeLabel = checkoutText(checkout, 'product.change', 'Change');
-		compact.innerHTML = '<div class="eilmo-cf-package-compact__info"><strong data-eilmo-package-compact-label></strong><span data-eilmo-package-compact-price></span></div><button type="button" class="eilmo-cf-package-compact__change" data-eilmo-package-change></button>';
+		compact.innerHTML = '<div class="eilmo-cf-package-compact__info"><strong data-eilmo-package-compact-label></strong><span class="eilmo-cf-single-product__choice-price" data-eilmo-package-compact-price></span><del class="eilmo-cf-single-product__choice-regular-price" data-eilmo-package-compact-regular hidden></del><span class="eilmo-cf-single-product__choice-saving" data-eilmo-package-compact-saving hidden></span></div><button type="button" class="eilmo-cf-package-compact__change" data-eilmo-package-change></button>';
 		const changeButton = compact.querySelector('[data-eilmo-package-change]');
 		if (element(changeButton, 'BUTTON')) changeButton.textContent = changeLabel;
 		grid.parentNode.insertBefore(compact, grid.nextSibling);

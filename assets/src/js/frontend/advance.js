@@ -2859,7 +2859,8 @@
 			const badgeParts = [];
 
 			if (
-				discount.discountOfferAvailable &&
+				discount.eligible &&
+				discount.saving > 0 &&
 				discount.discountLabel
 			) {
 				const discountBadge = replaceTokens(
@@ -2870,7 +2871,7 @@
 				if (discountBadge) badgeParts.push(discountBadge);
 			}
 
-			if (discount.freeDelivery) {
+			if (discount.freeDelivery && toNumber(totals.deliveryCharge) > 0) {
 				const freeBadge = String(
 					texts.free_delivery_badge ||
 						discount.freeDeliveryBadge ||
@@ -2882,7 +2883,7 @@
 			badge.textContent = badgeParts.filter(function (value, index, items) {
 				return value && items.indexOf(value) === index;
 			}).join(' + ');
-			badge.hidden = '' === badge.textContent.trim();
+			badge.hidden = badge.dataset.showBadge === 'no' || '' === badge.textContent.trim();
 		}
 	}
 
